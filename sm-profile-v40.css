@@ -1,4 +1,3 @@
- <style>
     /* =========================================================
       ADDITIONS/OVERRIDES:
       - Saved Moves "cards" + delete
@@ -250,4 +249,3 @@
     #sm-profile-v40 .smWxWind .gust.g3{ animation-delay:.45s; }
 
     #sm-profile-v40 .smWxStorm .bolt{ animation: smFlash 2.4s linear infinite; }
-  </style>
