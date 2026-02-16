@@ -1,4 +1,3 @@
- <script>
     (() => {
       const ROOT = document.getElementById("sm-profile-v40");
       if (!ROOT) return;
@@ -983,4 +982,3 @@
         await loadSessions();
       })();
     })();
-  </script>
