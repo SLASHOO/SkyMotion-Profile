@@ -806,10 +806,12 @@
               card.tabIndex = 0;
         
               if (cover) {
-                card.style.backgroundImage = `url("${cover}")`;
-                card.style.backgroundSize = "cover";
-                card.style.backgroundPosition = "center";
-              }
+                  const safe = String(cover).replaceAll('"', "%22");
+                  card.style.setProperty("--cover", `url("${safe}")`);
+                } else {
+                  card.style.setProperty("--cover", "none");
+                }
+
         
               card.innerHTML = `
                 <button class="sessDelBtn" type="button" aria-label="Delete session">${iconTrash()}</button>
