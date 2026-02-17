@@ -715,18 +715,38 @@
   position:relative;
   overflow:hidden;
 }
+/* keep cover image on ::before */
+#sm-profile-v40 .sessCard{
+  position:relative;
+  overflow:hidden;
+}
 #sm-profile-v40 .sessCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: var(--cover);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  filter: saturate(1.02) contrast(1.02);
+  z-index:0;
+}
+
+/* dark overlay on ::after */
+#sm-profile-v40 .sessCard::after{
   content:"";
   position:absolute;
   inset:0;
   background: rgba(0,0,0,.42);
   pointer-events:none;
-  z-index:0;
-}
-#sm-profile-v40 .sessInner{
-  position:relative;
   z-index:1;
 }
+
+#sm-profile-v40 .sessInner{
+  position:relative;
+  z-index:2;
+}
+
 
 /* Session delete button on card */
 #sm-profile-v40 .sessDelBtn{
