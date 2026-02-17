@@ -401,6 +401,73 @@
         `;
       }
 
+            function weatherPillHtml(weather_json, city){
+          if (!weather_json) return "";
+        
+          const w = weather_json || {};
+          const temp =
+            smNum(pickDeep(w, ["temp","temperature","current.temperature","current.temp","main.temp"])) ??
+            smNum(pickDeep(w, ["air_temperature","t"])) ??
+            null;
+        
+          const desc = (pickDeep(w, ["description","desc","current.description","weather[0].description","summary","condition"]) || "").toString();
+          const type = normalizeWeatherType(w);
+        
+          const tTxt = (temp == null) ? "—" : `${Math.round(temp)}°`;
+          const fallbackDesc = (type === "sun" ? "Clear" :
+                                type === "rain" ? "Rain" :
+                                type === "snow" ? "Snow" :
+                                type === "wind" ? "Windy" :
+                                type === "storm" ? "Storm" :
+                                type === "fog" ? "Fog" : "Cloudy");
+        
+          const label = `${tTxt} · ${(desc || fallbackDesc)}`;
+        
+          // class для ambience (is-sun/is-rain/...)
+          const cls =
+            type === "sun" ? "is-sun" :
+            type === "rain" ? "is-rain" :
+            type === "snow" ? "is-snow" :
+            type === "wind" ? "is-wind" :
+            type === "storm" ? "is-storm" :
+            type === "fog" ? "is-fog" : "is-clouds";
+        
+          // беремо твій svgForWeather(), просто зменшимо через CSS
+          const icon = svgForWeather(type);
+        
+          return `
+            <div class="sessTopRow">
+              <div class="sessWeather ${cls}" title="${escapeHtml(city || "")}">
+                <span class="wIconWrap" aria-hidden="true">${icon}</span>
+                <span class="wText">${escapeHtml(label)}</span>
+              </div>
+            </div>
+          `;
+        }
+        
+        async function hydrateSessionWeatherIntoCard(cardEl, sessionId){
+          if (!cardEl || !sessionId) return;
+          if (cardEl.dataset.wxHydrated === "1") return;
+          cardEl.dataset.wxHydrated = "1";
+        
+          try{
+            const detail = await api(ENDPOINTS.sessionOne(sessionId), { method:"GET" });
+            const s = detail?.session || detail || null;
+            const weather = s?.weather_json || s?.weather || null;
+            const city = s?.location_name || "";
+        
+            if (!weather) return;
+        
+            const top = cardEl.querySelector(".sessTopRowHost");
+            if (!top) return;
+        
+            top.innerHTML = weatherPillHtml(weather, city);
+          }catch(e){
+           
+          }
+        }
+        
+
       function renderWeatherWidget(weather_json, opts = {}){
         const el = els.weather;
         if (!el) return;
@@ -706,88 +773,102 @@
         });
       }
 
-      function renderSessions(list) {
-        const area = els.sessionsArea;
-        if (!area) return;
-
-        area.innerHTML = "";
-        const rows = Array.isArray(list) ? list : [];
-        safeText(els.sessionsCount, `${rows.length} sessions`);
-
-        if (!rows.length) {
-          area.innerHTML = `<div class="sheetCard" style="color:rgba(255,255,255,.78);">No completed sessions yet</div>`;
-          return;
-        }
-
-        let live = rows.slice();
-
-        const paint = () => {
+              function renderSessions(list) {
+          const area = els.sessionsArea;
+          if (!area) return;
+        
           area.innerHTML = "";
-          safeText(els.sessionsCount, `${live.length} sessions`);
-
-          live.forEach((s) => {
-            const id = getSessionId(s);
-            const city = getSessionCity(s);
-            const moves = getSessionMovesCount(s);
-            const cover = getSessionCover(s);
-            const dt = formatDateTime(s?.ended_at || s?.started_at);
-
-            const card = document.createElement("div");
-            card.className = "sessCard";
-            card.tabIndex = 0;
-
-            if (cover) {
-              card.style.backgroundImage = `url("${cover}")`;
-              card.style.backgroundSize = "cover";
-              card.style.backgroundPosition = "center";
-            }
-
-            card.innerHTML = `
-              <button class="sessDelBtn" type="button" aria-label="Delete session">${iconTrash()}</button>
-              <div class="sessInner">
-                <div class="sessDate">${escapeHtml(dt.date)}</div>
-                <div class="sessCity">${escapeHtml(city)}</div>
-                <div class="sessBottom">
-                  <div>${escapeHtml(dt.time)}</div>
-                  <div class="sessPill">
-                    <span class="pDot"></span>
-                    ${moves} moves
+          const rows = Array.isArray(list) ? list : [];
+          safeText(els.sessionsCount, `${rows.length} sessions`);
+        
+          if (!rows.length) {
+            area.innerHTML = `<div class="sheetCard" style="color:rgba(255,255,255,.78);">No completed sessions yet</div>`;
+            return;
+          }
+        
+          let live = rows.slice();
+        
+          const paint = () => {
+            area.innerHTML = "";
+            safeText(els.sessionsCount, `${live.length} sessions`);
+        
+            live.forEach((s) => {
+              const id = getSessionId(s);
+              const city = getSessionCity(s);
+              const moves = getSessionMovesCount(s);
+              const cover = getSessionCover(s);
+              const dt = formatDateTime(s?.ended_at || s?.started_at);
+        
+              const weather = s?.weather_json || s?.weather || null;
+        
+              const card = document.createElement("div");
+              card.className = "sessCard";
+              card.tabIndex = 0;
+        
+              if (cover) {
+                card.style.backgroundImage = `url("${cover}")`;
+                card.style.backgroundSize = "cover";
+                card.style.backgroundPosition = "center";
+              }
+        
+              card.innerHTML = `
+                <button class="sessDelBtn" type="button" aria-label="Delete session">${iconTrash()}</button>
+        
+                <div class="sessInner">
+                  <div class="sessTopRowHost">
+                    ${weather ? weatherPillHtml(weather, city) : ``}
+                  </div>
+        
+                  <div class="sessDate">${escapeHtml(dt.date)}</div>
+                  <div class="sessCity">${escapeHtml(city)}</div>
+        
+                  <div class="sessBottom">
+                    <div>${escapeHtml(dt.time)}</div>
+                    <div class="sessPill">
+                      <span class="pDot"></span>
+                      ${moves} moves
+                    </div>
                   </div>
                 </div>
-              </div>`;
-
-            card.addEventListener("click", () => {
-              if (typeof window.openSessionModal === "function") window.openSessionModal(s, id);
-              else openSessionFallbackModal(s);
-            });
-
-            card.querySelector(".sessDelBtn")?.addEventListener("click", async (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!id) return alert("Missing session id (backend can’t delete).");
-              if (!confirm("Delete this session from history?")) return;
-
-              card.classList.add("isDeleting");
-
-              const prev = live.slice();
-              live = live.filter(x => getSessionId(x) !== id);
-              paint();
-
-              try{
-                await deleteSessionById(id);
-              }catch(err){
-                live = prev;
-                paint();
-                alert(err?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete session.");
+              `;
+        
+              // якщо weather нема в списку — ледачо підтягуємо деталі (і підставляємо pill)
+              if (!weather && id) {
+                hydrateSessionWeatherIntoCard(card, id);
               }
+        
+              card.addEventListener("click", () => {
+                if (typeof window.openSessionModal === "function") window.openSessionModal(s, id);
+                else openSessionFallbackModal(s);
+              });
+        
+              card.querySelector(".sessDelBtn")?.addEventListener("click", async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!id) return alert("Missing session id (backend can’t delete).");
+                if (!confirm("Delete this session from history?")) return;
+        
+                card.classList.add("isDeleting");
+        
+                const prev = live.slice();
+                live = live.filter(x => getSessionId(x) !== id);
+                paint();
+        
+                try{
+                  await deleteSessionById(id);
+                }catch(err){
+                  live = prev;
+                  paint();
+                  alert(err?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete session.");
+                }
+              });
+        
+              area.appendChild(card);
             });
-
-            area.appendChild(card);
-          });
-        };
-
-        paint();
-      }
+          };
+        
+          paint();
+        }
 
       async function loadSessions() {
         try {
@@ -831,8 +912,7 @@
             }
           }
 
-          if (weather) renderWeatherWidget(weather, { city });
-          else hideWeatherWidget();
+          hideWeatherWidget();
 
         } catch (e) {
           if (e?.status === 401) {
