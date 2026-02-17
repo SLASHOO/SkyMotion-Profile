@@ -814,6 +814,17 @@
   display:flex; gap:10px; flex-wrap:wrap;
 }
 
+#sm-profile-v40 .sessWeather svg{
+  width:18px;
+  height:18px;
+  display:block;
+}
+#sm-profile-v40 .sessWeather .wIconWrap{
+  width:18px;
+  height:18px;
+}
+
+
 @keyframes smSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
 @keyframes smFloat { 0%,100%{transform:translateX(0)} 50%{transform:translateX(10px)} }
 @keyframes smRain { 0%{transform:translateY(-6px); opacity:.0} 30%{opacity:.9} 100%{transform:translateY(16px); opacity:0} }
