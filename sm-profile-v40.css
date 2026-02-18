@@ -871,3 +871,48 @@
 #sm-profile-v40 .smWxWind .gust.g3{ animation-delay:.45s; }
 
 #sm-profile-v40 .smWxStorm .bolt{ animation: smFlash 2.4s linear infinite; }
+
+/* === FIX: single overlay, predictable layers === */
+
+/* якщо в HTML є <div class="sessOverlay"> — просто вимикаємо його */
+#sm-profile-v40 .sessOverlay{ display:none !important; }
+
+#sm-profile-v40 .sessCard{
+  position:relative;
+  overflow:hidden;
+  background:#0b0c0e; /* фолбек коли нема cover */
+}
+
+/* картинка */
+#sm-profile-v40 .sessCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: var(--cover);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  filter: saturate(1.02) contrast(1.02);
+  z-index:0;
+}
+
+/* один нормальний градієнт для читабельності */
+#sm-profile-v40 .sessCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.18) 0%,
+    rgba(0,0,0,.28) 40%,
+    rgba(0,0,0,.58) 100%
+  );
+  z-index:1;
+}
+
+#sm-profile-v40 .sessInner{
+  position:relative;
+  z-index:2;
+}
+
