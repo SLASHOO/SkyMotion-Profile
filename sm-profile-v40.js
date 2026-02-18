@@ -698,21 +698,20 @@
       }
 
          function getSessionMovesCount(s) {
-      // пріоритет 1: бек уже порахував
-      if (typeof s?.moves_count === "number") return s.moves_count;
-    
-      const lib = s?.library_results_json || null;
-    
-      // пріоритет 2: ми самі записали filtered_count в Library
-      const fc = Number(lib?.filtered_count);
-      if (Number.isFinite(fc) && fc > 0) return fc;
-    
-      // пріоритет 3: якщо користувач відкривав відео — рахуємо opened_videos
-      if (Array.isArray(lib?.opened_videos)) return lib.opened_videos.length;
-    
-      // фолбек 0
-      return 0;
-    }
+  if (typeof s?.moves_count === "number") return s.moves_count;
+
+  const lib = s?.library_results_json || null;
+  if (!lib) return 0;
+
+  if (Array.isArray(lib?.opened_videos) && lib.opened_videos.length > 0) {
+    return lib.opened_videos.length;
+  }
+
+  const fc = Number(lib?.filtered_count);
+  if (Number.isFinite(fc) && fc > 0) return fc;
+
+  return 0;
+}
 
       function getSessionCover(s) {
         const raw = s?.cover_image_url || s?.assistant_photo_url || "";
@@ -735,6 +734,7 @@
         }
       }
 
+    
       function openSessionFallbackModal(s){
         const id = getSessionId(s);
         const city = getSessionCity(s);
@@ -1042,6 +1042,15 @@
           }
         });
       }
+
+    function getSessionCover(s) {
+  const cover = normalizeAnyUrl(s?.cover_image_url || "");
+  const assistant = normalizeAnyUrl(s?.assistant_photo_url || "");
+
+  if (cover && /\/thumb\.jpg(\?|$)/i.test(cover) && assistant) return assistant;
+  return cover || assistant || "";
+}
+
 
       // ---------------- Init ----------------
       (async function init() {
