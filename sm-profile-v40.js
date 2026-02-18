@@ -697,11 +697,22 @@
         return name;
       }
 
-      function getSessionMovesCount(s) {
-        if (typeof s?.moves_count === "number") return s.moves_count;
-        if (Array.isArray(s?.library_results_json)) return s.library_results_json.length;
-        return 0;
-      }
+         function getSessionMovesCount(s) {
+      // пріоритет 1: бек уже порахував
+      if (typeof s?.moves_count === "number") return s.moves_count;
+    
+      const lib = s?.library_results_json || null;
+    
+      // пріоритет 2: ми самі записали filtered_count в Library
+      const fc = Number(lib?.filtered_count);
+      if (Number.isFinite(fc) && fc > 0) return fc;
+    
+      // пріоритет 3: якщо користувач відкривав відео — рахуємо opened_videos
+      if (Array.isArray(lib?.opened_videos)) return lib.opened_videos.length;
+    
+      // фолбек 0
+      return 0;
+    }
 
       function getSessionCover(s) {
         const raw = s?.cover_image_url || s?.assistant_photo_url || "";
@@ -892,29 +903,30 @@
             return db - da;
           });
 
-          renderSessions(onlyDone);
-
-          // Weather from latest DONE session (list may or may not include weather_json)
-          const latest = onlyDone[0] || null;
-          if (!latest) { hideWeatherWidget(); return; }
-
-          let weather = latest?.weather_json || latest?.weather || null;
-          let city = latest?.location_name || "";
-
-          // If weather not in list response -> fetch details
-          if (!weather) {
-            const sid = getSessionId(latest);
-            if (sid) {
-              try {
-                const detail = await api(ENDPOINTS.sessionOne(sid), { method:"GET" });
-                const s = detail?.session || detail || null;
-                weather = s?.weather_json || s?.weather || null;
-                city = s?.location_name || city;
-              } catch(e) {}
+                      renderSessions(onlyDone);
+            const latest = onlyDone[0] || null;
+            if (!latest) { hideWeatherWidget(); return; }
+            
+            let weather = latest?.weather_json || latest?.weather || null;
+            let city = latest?.location_name || "";
+            
+            // If weather not in list response -> fetch details
+            if (!weather) {
+              const sid = getSessionId(latest);
+              if (sid) {
+                try {
+                  const detail = await api(ENDPOINTS.sessionOne(sid), { method:"GET" });
+                  const s = detail?.session || detail || null;
+                  weather = s?.weather_json || s?.weather || null;
+                  city = s?.location_name || city;
+                } catch(e) {}
+              }
             }
-          }
-
-          hideWeatherWidget();
+            
+            // ТУТ головне: не ховай віджет завжди
+            if (weather) renderWeatherWidget(weather, { city });
+            else hideWeatherWidget();
+            
 
         } catch (e) {
           if (e?.status === 401) {
