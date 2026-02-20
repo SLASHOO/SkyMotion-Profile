@@ -1,3 +1,10 @@
+/* =========================================================
+   SKYMOTION PROFILE v40 — FULL JS (FIXED / CONSISTENT)
+   - ✅ No broken brackets (IIFE closures correct)
+   - ✅ Session UX v2 integrated cleanly (2 cards collapsed + toggle + block open)
+   - ✅ Keeps your API logic / rendering / delete logic
+========================================================= */
+
 (() => {
   const ROOT = document.getElementById("sm-profile-v40");
   if (!ROOT) return;
@@ -9,7 +16,7 @@
 
   const API_BASE = String(window.SM_API_BASE || "https://skymotion.onrender.com").replace(/\/$/, "");
 
-  // ✅ ЗАЛИШ ОДИН ROUTES
+  // ✅ Single routes source of truth
   const ROUTES = { profile: "/profile", map: "/map", cam: "/assistant", library: "/libraryy" };
 
   const ENDPOINTS = {
@@ -29,24 +36,39 @@
     avatarBtn: $("#smAvatarBtn"),
     startSession: $("#sm-startSession"),
     how: $("#sm-howItWorks"),
+
     savedArea: $("#sm-savedArea"),
     savedCount: $("#sm-count"),
+
     sessionsArea: $("#sm-sessionsArea"),
     sessionsCount: $("#sm-sessionCount"),
+
     modal: $("#smModal"),
     modalBackdrop: $("#smModalBackdrop"),
     modalContent: $("#smModalContent"),
+
     weather: $("#smWeatherWidget"),
+
+    // UX v2 toggle (button or link you have in HTML)
+    sessionsToggle: $("#smSessionsToggle"),
   };
 
-  function safeText(el, t) { if (el) el.textContent = t == null ? "" : String(t); }
-  function escapeHtml(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  function safeText(el, t) {
+    if (el) el.textContent = t == null ? "" : String(t);
   }
 
-  function isAbsoluteHttpUrl(v) { return /^https?:\/\//i.test(String(v || "").trim()); }
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function isAbsoluteHttpUrl(v) {
+    return /^https?:\/\//i.test(String(v || "").trim());
+  }
 
   function normalizeAnyUrl(raw) {
     const v = String(raw || "").trim();
@@ -74,7 +96,9 @@
     const finalUrl = normalizeAvatarUrl(url);
     img.onerror = null;
     img.src = finalUrl;
-    img.onerror = () => { if (img.src !== DEFAULT_AVATAR) img.src = DEFAULT_AVATAR; };
+    img.onerror = () => {
+      if (img.src !== DEFAULT_AVATAR) img.src = DEFAULT_AVATAR;
+    };
   }
 
   function openModal(html) {
@@ -86,7 +110,9 @@
       els.modal.setAttribute("aria-hidden", "true");
       document.removeEventListener("keydown", onKey);
     };
-    const onKey = (e) => { if (e.key === "Escape") close(); };
+    const onKey = (e) => {
+      if (e.key === "Escape") close();
+    };
 
     els.modal.setAttribute("aria-hidden", "false");
     document.addEventListener("keydown", onKey);
@@ -129,25 +155,48 @@
   function pickNameFromMember(member) {
     const cf = member?.customFields || {};
     return (
-      cf.nickname || cf.Nickname || cf.username || cf.Username ||
-      member?.name || member?.profile?.name || member?.email || null
+      cf.nickname ||
+      cf.Nickname ||
+      cf.username ||
+      cf.Username ||
+      member?.name ||
+      member?.profile?.name ||
+      member?.email ||
+      null
     );
   }
 
   function pickAvatarFromMember(member) {
     const cf = member?.customFields || {};
     const fromCF =
-      cf.avatar || cf.Avatar || cf.photo || cf.Photo || cf.image || cf.Image ||
-      cf.profile_image || cf.profileImage || cf.avatar_url || cf.avatarUrl;
+      cf.avatar ||
+      cf.Avatar ||
+      cf.photo ||
+      cf.Photo ||
+      cf.image ||
+      cf.Image ||
+      cf.profile_image ||
+      cf.profileImage ||
+      cf.avatar_url ||
+      cf.avatarUrl;
 
     const fromProfile =
-      member?.profile?.photo || member?.profile?.image || member?.profile?.avatar ||
-      member?.profile?.avatarUrl || member?.profile?.avatar_url ||
-      member?.profile?.profileImage || member?.profile?.profile_image;
+      member?.profile?.photo ||
+      member?.profile?.image ||
+      member?.profile?.avatar ||
+      member?.profile?.avatarUrl ||
+      member?.profile?.avatar_url ||
+      member?.profile?.profileImage ||
+      member?.profile?.profile_image;
 
     const fromTop =
-      member?.profileImage || member?.profile_image || member?.avatar ||
-      member?.avatarUrl || member?.avatar_url || member?.photo || member?.image;
+      member?.profileImage ||
+      member?.profile_image ||
+      member?.avatar ||
+      member?.avatarUrl ||
+      member?.avatar_url ||
+      member?.photo ||
+      member?.image;
 
     return fromCF || fromProfile || fromTop || null;
   }
@@ -184,7 +233,7 @@
     return payload;
   }
 
-  // ---------------- Session Mode helpers (ONE PLACE) ----------------
+  // ---------------- Session Mode helpers ----------------
   function buildUrl(path, sess) {
     const u = new URL(path, location.origin);
     u.searchParams.set("mode", "session");
@@ -192,18 +241,18 @@
     return u.pathname + "?" + u.searchParams.toString();
   }
 
-  async function getActiveSessionIdOrNull(){
-    try{
-      const data = await api(`${API_BASE}/v1/sessions?status=active&limit=1&offset=0`, { method:"GET" });
-      const rows = Array.isArray(data?.sessions) ? data.sessions : (Array.isArray(data) ? data : []);
+  async function getActiveSessionIdOrNull() {
+    try {
+      const data = await api(`${API_BASE}/v1/sessions?status=active&limit=1&offset=0`, { method: "GET" });
+      const rows = Array.isArray(data?.sessions) ? data.sessions : Array.isArray(data) ? data : [];
       const s = rows?.[0];
       return s?.id || null;
-    }catch(e){
+    } catch (e) {
       return null;
     }
   }
 
-  async function startSessionAndGoMap(){
+  async function startSessionAndGoMap() {
     const btn = els.startSession;
     if (!btn) return;
 
@@ -211,19 +260,19 @@
     const prevTxt = btn.textContent;
     btn.textContent = "Starting…";
 
-    try{
+    try {
       const activeId = await getActiveSessionIdOrNull();
-      if (activeId){
+      if (activeId) {
         location.href = buildUrl(ROUTES.map, activeId);
         return;
       }
 
-      const res = await api(`${API_BASE}/v1/sessions/start`, { method:"POST" });
+      const res = await api(`${API_BASE}/v1/sessions/start`, { method: "POST" });
       const sess = res?.session_id || res?.id;
       if (!sess) throw new Error("NO_SESSION_ID");
 
       location.href = buildUrl(ROUTES.map, sess);
-    }catch(e){
+    } catch (e) {
       alert(e?.status === 401 ? "Please log in" : "Failed to start session");
       btn.disabled = false;
       btn.textContent = prevTxt || "Start Session";
@@ -289,49 +338,52 @@
   }
 
   // ---------------- Icons ----------------
-  function iconTrash(){
+  function iconTrash() {
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 7h2v9h-2v-9zm4 0h2v9h-2v-9zM7 10h2v9H7v-9z"/></svg>`;
   }
-  function iconOpen(){
+  function iconOpen() {
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7h10v10h-2V10.41l-9.29 9.3-1.42-1.42 9.3-9.29H10V7z"/><path d="M5 5h6v2H7v10h10v-4h2v6H5V5z"/></svg>`;
   }
 
-  // ---------------- Weather widget (animated, iOS-like) ----------------
-  function smNum(v){
+  // ---------------- Weather widget ----------------
+  function smNum(v) {
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
   }
 
-  function pickDeep(obj, keys){
-    for (const k of keys){
+  function pickDeep(obj, keys) {
+    for (const k of keys) {
       if (!obj) break;
       const parts = k.split(".");
       let cur = obj;
       let ok = true;
-      for (const p of parts){
+      for (const p of parts) {
         if (cur && Object.prototype.hasOwnProperty.call(cur, p)) cur = cur[p];
-        else { ok = false; break; }
+        else {
+          ok = false;
+          break;
+        }
       }
       if (ok && cur != null && cur !== "") return cur;
     }
     return null;
   }
 
-  function normalizeWeatherType(weather_json){
+  function normalizeWeatherType(weather_json) {
     const w = weather_json || {};
-    const code = pickDeep(w, ["weathercode","code","current.weathercode","current.code"]);
-    const main = String(pickDeep(w, ["main","condition","current.condition","current.weather","weather.main"]) || "").toLowerCase();
-    const desc = String(pickDeep(w, ["description","desc","current.description","weather[0].description"]) || "").toLowerCase();
-    const icon = String(pickDeep(w, ["icon","current.icon","weather[0].icon"]) || "").toLowerCase();
+    const code = pickDeep(w, ["weathercode", "code", "current.weathercode", "current.code"]);
+    const main = String(pickDeep(w, ["main", "condition", "current.condition", "current.weather", "weather.main"]) || "").toLowerCase();
+    const desc = String(pickDeep(w, ["description", "desc", "current.description", "weather[0].description"]) || "").toLowerCase();
+    const icon = String(pickDeep(w, ["icon", "current.icon", "weather[0].icon"]) || "").toLowerCase();
 
     const c = smNum(code);
-    if (c != null){
+    if (c != null) {
       if (c === 0) return "sun";
       if (c === 1 || c === 2 || c === 3) return "cloud";
-      if ([45,48].includes(c)) return "fog";
-      if ([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(c)) return "rain";
-      if ([71,73,75,77,85,86].includes(c)) return "snow";
-      if ([95,96,99].includes(c)) return "storm";
+      if ([45, 48].includes(c)) return "fog";
+      if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(c)) return "rain";
+      if ([71, 73, 75, 77, 85, 86].includes(c)) return "snow";
+      if ([95, 96, 99].includes(c)) return "storm";
     }
 
     const s = (main + " " + desc + " " + icon).trim();
@@ -345,8 +397,9 @@
     return "cloud";
   }
 
-  function svgForWeather(type){
-    if (type === "sun") return `
+  function svgForWeather(type) {
+    if (type === "sun")
+      return `
       <svg class="smWxSun" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="sunRays">
           <circle cx="27" cy="27" r="10" fill="rgba(255,180,60,.95)"></circle>
@@ -361,10 +414,10 @@
             <rect x="42" y="36" width="2" height="8" rx="1" transform="rotate(-45 43 40)"></rect>
           </g>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
-    if (type === "rain") return `
+    if (type === "rain")
+      return `
       <svg class="smWxRain" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -375,10 +428,10 @@
           <rect class="drop d2" x="26" y="34" width="2" height="8" rx="1"></rect>
           <rect class="drop d3" x="34" y="34" width="2" height="8" rx="1"></rect>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
-    if (type === "snow") return `
+    if (type === "snow")
+      return `
       <svg class="smWxSnow" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -389,10 +442,10 @@
           <circle class="flake f2" cx="28" cy="38" r="1.8"></circle>
           <circle class="flake f3" cx="36" cy="38" r="1.8"></circle>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
-    if (type === "wind") return `
+    if (type === "wind")
+      return `
       <svg class="smWxWind" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g fill="none" stroke="rgba(255,255,255,.80)" stroke-width="3" stroke-linecap="round">
           <path d="M14 22c6 0 10-3 16-3 4 0 6 2 6 4 0 2-2 4-5 4"></path>
@@ -409,10 +462,10 @@
         <g class="gust g3" fill="none" stroke="rgba(160,220,255,.35)" stroke-width="2" stroke-linecap="round">
           <path d="M8 36h12"></path>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
-    if (type === "storm") return `
+    if (type === "storm")
+      return `
       <svg class="smWxStorm" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -423,10 +476,10 @@
           <rect class="drop d1" x="16" y="34" width="2" height="8" rx="1"></rect>
           <rect class="drop d2" x="34" y="34" width="2" height="8" rx="1"></rect>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
-    if (type === "fog") return `
+    if (type === "fog")
+      return `
       <svg class="smWxCloud" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 30c-4.4 0-8-3.1-8-7 0-3.4 2.8-6.3 6.6-6.9C18 12.3 21 10 25 10c5.1 0 9.3 3.9 9.6 8.9 4 .6 7 3.4 7 7.1 0 3.9-3.6 7-8 7H18z"
@@ -436,8 +489,7 @@
           <path d="M14 36h26"></path>
           <path d="M16 40h22"></path>
         </g>
-      </svg>
-    `;
+      </svg>`;
 
     return `
       <svg class="smWxCloud" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
@@ -445,39 +497,53 @@
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
             fill="rgba(255,255,255,.78)"/>
         </g>
-      </svg>
-    `;
+      </svg>`;
   }
 
-  function weatherPillHtml(weather_json, city){
+  function weatherPillHtml(weather_json, city) {
     if (!weather_json) return "";
 
     const w = weather_json || {};
     const temp =
-      smNum(pickDeep(w, ["temp","temperature","current.temperature","current.temp","main.temp"])) ??
-      smNum(pickDeep(w, ["air_temperature","t"])) ??
+      smNum(pickDeep(w, ["temp", "temperature", "current.temperature", "current.temp", "main.temp"])) ??
+      smNum(pickDeep(w, ["air_temperature", "t"])) ??
       null;
 
-    const desc = (pickDeep(w, ["description","desc","current.description","weather[0].description","summary","condition"]) || "").toString();
+    const desc = (pickDeep(w, ["description", "desc", "current.description", "weather[0].description", "summary", "condition"]) || "").toString();
     const type = normalizeWeatherType(w);
 
-    const tTxt = (temp == null) ? "—" : `${Math.round(temp)}°`;
-    const fallbackDesc = (type === "sun" ? "Clear" :
-                          type === "rain" ? "Rain" :
-                          type === "snow" ? "Snow" :
-                          type === "wind" ? "Windy" :
-                          type === "storm" ? "Storm" :
-                          type === "fog" ? "Fog" : "Cloudy");
+    const tTxt = temp == null ? "—" : `${Math.round(temp)}°`;
+    const fallbackDesc =
+      type === "sun"
+        ? "Clear"
+        : type === "rain"
+        ? "Rain"
+        : type === "snow"
+        ? "Snow"
+        : type === "wind"
+        ? "Windy"
+        : type === "storm"
+        ? "Storm"
+        : type === "fog"
+        ? "Fog"
+        : "Cloudy";
 
-    const label = `${tTxt} · ${(desc || fallbackDesc)}`;
+    const label = `${tTxt} · ${desc || fallbackDesc}`;
 
     const cls =
-      type === "sun" ? "is-sun" :
-      type === "rain" ? "is-rain" :
-      type === "snow" ? "is-snow" :
-      type === "wind" ? "is-wind" :
-      type === "storm" ? "is-storm" :
-      type === "fog" ? "is-fog" : "is-clouds";
+      type === "sun"
+        ? "is-sun"
+        : type === "rain"
+        ? "is-rain"
+        : type === "snow"
+        ? "is-snow"
+        : type === "wind"
+        ? "is-wind"
+        : type === "storm"
+        ? "is-storm"
+        : type === "fog"
+        ? "is-fog"
+        : "is-clouds";
 
     const icon = svgForWeather(type);
 
@@ -491,13 +557,13 @@
     `;
   }
 
-  async function hydrateSessionWeatherIntoCard(cardEl, sessionId){
+  async function hydrateSessionWeatherIntoCard(cardEl, sessionId) {
     if (!cardEl || !sessionId) return;
     if (cardEl.dataset.wxHydrated === "1") return;
     cardEl.dataset.wxHydrated = "1";
 
-    try{
-      const detail = await api(ENDPOINTS.sessionOne(sessionId), { method:"GET" });
+    try {
+      const detail = await api(ENDPOINTS.sessionOne(sessionId), { method: "GET" });
       const s = detail?.session || detail || null;
       const weather = s?.weather_json || s?.weather || null;
       const city = s?.location_name || "";
@@ -508,39 +574,45 @@
       if (!top) return;
 
       top.innerHTML = weatherPillHtml(weather, city);
-    }catch(e){}
+    } catch (e) {}
   }
 
-  function renderWeatherWidget(weather_json, opts = {}){
+  function renderWeatherWidget(weather_json, opts = {}) {
     const el = els.weather;
     if (!el) return;
 
     const w = weather_json || {};
-    const city = (opts.city || pickDeep(w, ["city","location_name","location.name","place"]) || "").toString();
+    const city = (opts.city || pickDeep(w, ["city", "location_name", "location.name", "place"]) || "").toString();
 
     const temp =
-      smNum(pickDeep(w, ["temp","temperature","current.temperature","current.temp","main.temp"])) ??
-      smNum(pickDeep(w, ["air_temperature","t"])) ??
+      smNum(pickDeep(w, ["temp", "temperature", "current.temperature", "current.temp", "main.temp"])) ??
+      smNum(pickDeep(w, ["air_temperature", "t"])) ??
       null;
 
     const wind =
-      smNum(pickDeep(w, ["wind_kph","wind_kmh","wind.speed","current.windspeed","wind_speed","wind"])) ??
-      null;
+      smNum(pickDeep(w, ["wind_kph", "wind_kmh", "wind.speed", "current.windspeed", "wind_speed", "wind"])) ?? null;
 
-    const desc =
-      (pickDeep(w, ["description","desc","current.description","weather[0].description","summary","condition"]) || "").toString();
+    const desc = (pickDeep(w, ["description", "desc", "current.description", "weather[0].description", "summary", "condition"]) || "").toString();
 
     const type = normalizeWeatherType(w);
     const iconSvg = svgForWeather(type);
 
-    const tempTxt = (temp == null) ? "—" : `${Math.round(temp)}°`;
-    const windTxt = (wind == null) ? "" : `Wind ${Math.round(wind)} km/h`;
-    const fallbackDesc = (type === "sun" ? "Clear" :
-                          type === "rain" ? "Rain" :
-                          type === "snow" ? "Snow" :
-                          type === "wind" ? "Windy" :
-                          type === "storm" ? "Storm" :
-                          type === "fog" ? "Fog" : "Cloudy");
+    const tempTxt = temp == null ? "—" : `${Math.round(temp)}°`;
+    const windTxt = wind == null ? "" : `Wind ${Math.round(wind)} km/h`;
+    const fallbackDesc =
+      type === "sun"
+        ? "Clear"
+        : type === "rain"
+        ? "Rain"
+        : type === "snow"
+        ? "Snow"
+        : type === "wind"
+        ? "Windy"
+        : type === "storm"
+        ? "Storm"
+        : type === "fog"
+        ? "Fog"
+        : "Cloudy";
 
     el.style.display = "flex";
     el.innerHTML = `
@@ -558,21 +630,27 @@
     `;
   }
 
-  function hideWeatherWidget(){
+  function hideWeatherWidget() {
     if (!els.weather) return;
     els.weather.style.display = "none";
     els.weather.innerHTML = "";
   }
 
-  // ---------------- Saved moves (UI + Delete) ----------------
-  function getMoveId(m){
+  // ---------------- Saved moves ----------------
+  function getMoveId(m) {
     return m?.id || m?.move_id || m?.saved_id || m?.slug || m?.videoUrl || m?.video_url || null;
   }
-  function getMoveTitle(m, i) { return m?.title || m?.name || m?.move_title || `Move ${i + 1}`; }
-  function getMoveThumb(m) { return m?.thumb || m?.thumbUrl || m?.thumbnail || m?.image || m?.cover_url || ""; }
-  function getMoveVideo(m) { return m?.videoUrl || m?.video_url || m?.url || m?.playbackUrl || ""; }
+  function getMoveTitle(m, i) {
+    return m?.title || m?.name || m?.move_title || `Move ${i + 1}`;
+  }
+  function getMoveThumb(m) {
+    return m?.thumb || m?.thumbUrl || m?.thumbnail || m?.image || m?.cover_url || "";
+  }
+  function getMoveVideo(m) {
+    return m?.videoUrl || m?.video_url || m?.url || m?.playbackUrl || "";
+  }
 
-  async function deleteSavedMove(id){
+  async function deleteSavedMove(id) {
     const url = `${API_BASE}/v1/saved-moves/${encodeURIComponent(id)}`;
     return api(url, { method: "DELETE" });
   }
@@ -681,12 +759,12 @@
 
           card.classList.add("isDeleting");
           const prev = live.slice();
-          live = live.filter(x => getMoveId(x) !== id);
+          live = live.filter((x) => getMoveId(x) !== id);
           paint();
 
-          try{
+          try {
             await deleteSavedMove(id);
-          }catch(e){
+          } catch (e) {
             live = prev;
             paint();
             alert(e?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete. Check backend logs.");
@@ -704,7 +782,7 @@
     try {
       safeText(els.savedCount, "Loading…");
       const data = await api(ENDPOINTS.savedMoves(), { method: "GET" });
-      const rows = Array.isArray(data) ? data : (data?.items || data?.saved_moves || data?.moves || []);
+      const rows = Array.isArray(data) ? data : data?.items || data?.saved_moves || data?.moves || [];
       renderSavedMoves(rows);
     } catch (e) {
       if (e?.status === 401) return renderSavedMoves([], { requiresLogin: true });
@@ -725,7 +803,7 @@
     if (!d) return { date: "Session", time: "" };
     return {
       date: d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" }),
-      time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+      time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
     };
   }
 
@@ -763,22 +841,22 @@
     return cover || assistant || "";
   }
 
-  async function deleteSessionById(id){
-    try{
-      return await api(`${API_BASE}/v1/sessions/${encodeURIComponent(id)}`, { method:"DELETE" });
-    }catch(e){
-      try{
+  async function deleteSessionById(id) {
+    try {
+      return await api(`${API_BASE}/v1/sessions/${encodeURIComponent(id)}`, { method: "DELETE" });
+    } catch (e) {
+      try {
         return await api(`${API_BASE}/v1/sessions/${encodeURIComponent(id)}`, {
-          method:"PATCH",
-          body: JSON.stringify({ status: "deleted" })
+          method: "PATCH",
+          body: JSON.stringify({ status: "deleted" }),
         });
-      }catch(e2){
+      } catch (e2) {
         throw e;
       }
     }
   }
 
-  function openSessionFallbackModal(s){
+  function openSessionFallbackModal(s) {
     const id = getSessionId(s);
     const city = getSessionCity(s);
     const dt = formatDateTime(s?.ended_at || s?.started_at);
@@ -798,11 +876,17 @@
           ${coverHtml}
           <div class="sheetCard">
             <div style="font-weight:850; margin-bottom:6px;">Session</div>
-            <pre style="margin:0; white-space:pre-wrap; color:rgba(255,255,255,.82); font-size:12px; line-height:1.55;">${escapeHtml(JSON.stringify(s, null, 2))}</pre>
+            <pre style="margin:0; white-space:pre-wrap; color:rgba(255,255,255,.82); font-size:12px; line-height:1.55;">${escapeHtml(
+              JSON.stringify(s, null, 2)
+            )}</pre>
           </div>
-          ${id ? `<div style="display:flex; gap:10px; flex-wrap:wrap;">
+          ${
+            id
+              ? `<div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="smBtn smBtnPrimary" type="button" id="smDeleteSessionFromModal">Delete session</button>
-          </div>` : ``}
+          </div>`
+              : ``
+          }
         </div>
       </div>`);
     if (!ctl) return;
@@ -815,16 +899,52 @@
       if (!confirm("Delete this session from history?")) return;
       delBtn.disabled = true;
       delBtn.textContent = "Deleting…";
-      try{
+      try {
         await deleteSessionById(id);
         ctl.close();
         await loadSessions();
-      }catch(e){
+      } catch (e) {
         delBtn.disabled = false;
         delBtn.textContent = "Delete session";
         alert(e?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete session.");
       }
     });
+  }
+
+  // === Session UX v2 state (2 cards collapsed + toggle) ===
+  function initSessionUxV2() {
+    const deck = els.sessionsArea;
+    const toggle = els.sessionsToggle;
+
+    if (deck) deck.classList.add("is-collapsed");
+
+    if (toggle && deck) {
+      const setLabel = () => {
+        const collapsed = deck.classList.contains("is-collapsed");
+        toggle.textContent = collapsed ? "see all" : "collapse";
+      };
+      setLabel();
+
+      toggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        deck.classList.toggle("is-collapsed");
+        setLabel();
+      });
+    }
+
+    // Hard block open (capture phase) but allow delete button
+    ROOT.addEventListener(
+      "click",
+      (e) => {
+        if (e.target.closest(".sessDelBtn")) return;
+        const card = e.target.closest(".sessCard");
+        if (!card) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      },
+      true
+    );
   }
 
   function renderSessions(list) {
@@ -843,7 +963,10 @@
     let live = rows.slice();
 
     const paint = () => {
+      const keepCollapsed = area.classList.contains("is-collapsed");
       area.innerHTML = "";
+      if (keepCollapsed) area.classList.add("is-collapsed");
+
       safeText(els.sessionsCount, `${live.length} sessions`);
 
       live.forEach((s) => {
@@ -852,7 +975,6 @@
         const moves = getSessionMovesCount(s);
         const cover = getSessionCover(s);
         const dt = formatDateTime(s?.ended_at || s?.started_at);
-
         const weather = s?.weather_json || s?.weather || null;
 
         const card = document.createElement("div");
@@ -860,7 +982,7 @@
         card.tabIndex = 0;
 
         if (cover) {
-          const safe = String(cover).replaceAll('"', "%22");
+          const safe = String(cover).split('"').join("%22");
           card.style.setProperty("--cover", `url("${safe}")`);
         } else {
           card.style.setProperty("--cover", "none");
@@ -887,30 +1009,27 @@
           </div>
         `;
 
-        if (!weather && id) {
-          hydrateSessionWeatherIntoCard(card, id);
-        }
+        if (!weather && id) hydrateSessionWeatherIntoCard(card, id);
 
-        card.addEventListener("click", () => {
-          if (typeof window.openSessionModal === "function") window.openSessionModal(s, id);
-          else openSessionFallbackModal(s);
-        });
+        // NOTE: card click open is intentionally blocked by Session UX v2 capture listener.
+        // If you ever want to re-enable later, remove that capture listener.
 
         card.querySelector(".sessDelBtn")?.addEventListener("click", async (e) => {
           e.preventDefault();
           e.stopPropagation();
+
           if (!id) return alert("Missing session id (backend can’t delete).");
           if (!confirm("Delete this session from history?")) return;
 
           card.classList.add("isDeleting");
 
           const prev = live.slice();
-          live = live.filter(x => getSessionId(x) !== id);
+          live = live.filter((x) => getSessionId(x) !== id);
           paint();
 
-          try{
+          try {
             await deleteSessionById(id);
-          }catch(err){
+          } catch (err) {
             live = prev;
             paint();
             alert(err?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete session.");
@@ -929,15 +1048,10 @@
       safeText(els.sessionsCount, "Loading…");
       const data = await api(ENDPOINTS.sessions(), { method: "GET" });
 
-      const rows = Array.isArray(data)
-        ? data
-        : Array.isArray(data?.sessions)
-          ? data.sessions
-          : [];
+      const rows = Array.isArray(data) ? data : Array.isArray(data?.sessions) ? data.sessions : [];
+      const onlyDone = rows.filter((s) => s?.status === "done");
 
-      const onlyDone = rows.filter(s => s?.status === "done");
-
-      onlyDone.sort((a,b) => {
+      onlyDone.sort((a, b) => {
         const da = parseISO(a?.ended_at || a?.started_at)?.getTime() || 0;
         const db = parseISO(b?.ended_at || b?.started_at)?.getTime() || 0;
         return db - da;
@@ -946,7 +1060,10 @@
       renderSessions(onlyDone);
 
       const latest = onlyDone[0] || null;
-      if (!latest) { hideWeatherWidget(); return; }
+      if (!latest) {
+        hideWeatherWidget();
+        return;
+      }
 
       let weather = latest?.weather_json || latest?.weather || null;
       let city = latest?.location_name || "";
@@ -955,97 +1072,28 @@
         const sid = getSessionId(latest);
         if (sid) {
           try {
-            const detail = await api(ENDPOINTS.sessionOne(sid), { method:"GET" });
+            const detail = await api(ENDPOINTS.sessionOne(sid), { method: "GET" });
             const s = detail?.session || detail || null;
             weather = s?.weather_json || s?.weather || null;
             city = s?.location_name || city;
-          } catch(e) {}
+          } catch (e) {}
         }
       }
 
       if (weather) renderWeatherWidget(weather, { city });
       else hideWeatherWidget();
-
     } catch (e) {
       if (e?.status === 401) {
         safeText(els.sessionsCount, "Login required");
-        els.sessionsArea.innerHTML = `<div class="sheetCard">Login required</div>`;
+        if (els.sessionsArea) els.sessionsArea.innerHTML = `<div class="sheetCard">Login required</div>`;
         hideWeatherWidget();
         return;
       }
-      els.sessionsArea.innerHTML = `<div class="sheetCard">Failed to load sessions</div>`;
+      if (els.sessionsArea) els.sessionsArea.innerHTML = `<div class="sheetCard">Failed to load sessions</div>`;
       hideWeatherWidget();
     }
   }
 
-
-  /* =========================================================
-   PROFILE v40 — SESSION UX v2 PATCH (SAFE)
-   - Session History: show 2 by default, "see all" toggles
-   - Disable session card open on click (delete stays working)
-   - DOES NOT touch your API logic / rendering logic
-   - Works even if sessions are re-rendered later
-========================================================= */
-
-(function(){
-  const root = document.getElementById("sm-profile-v40");
-  if(!root) return;
-
-  const deck = root.querySelector("#sm-sessionsArea");
-  const toggle = root.querySelector("#smSessionsToggle");
-
-  // 1) Default collapsed (2 cards)
-  if(deck) deck.classList.add("is-collapsed");
-
-  // 2) Toggle see all / collapse (pure class toggle)
-  if(toggle && deck){
-    const setLabel = () => {
-      const collapsed = deck.classList.contains("is-collapsed");
-      toggle.textContent = collapsed ? "see all" : "collapse";
-    };
-    setLabel();
-
-    toggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      deck.classList.toggle("is-collapsed");
-      setLabel();
-    });
-  }
-
-  // 3) HARD block session card click -> no modal open.
-  //    Keep delete working.
-  //    Capture phase so it intercepts BEFORE your old listeners.
-  root.addEventListener("click", (e) => {
-    // allow delete button clicks
-    if(e.target.closest(".sessDelBtn")) return;
-
-    // if click on session card -> block
-    const card = e.target.closest(".sessCard");
-    if(!card) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-  }, true);
-
-  // 4) If sessions are re-rendered and deck loses class, enforce again
-  //    (lightweight observer, no API touch)
-  if(deck && window.MutationObserver){
-    const obs = new MutationObserver(() => {
-      // keep collapsed state default unless user expanded
-      // (if user expanded, we keep it as is)
-      // so do nothing if toggle already expanded
-      // but if deck lost both states, set collapsed.
-      if(!deck.classList.contains("is-collapsed") && toggle && toggle.textContent === "collapse"){
-        return;
-      }
-      if(!deck.classList.contains("is-collapsed") && toggle && toggle.textContent === "see all"){
-        // user not expanded, keep collapsed
-        deck.classList.add("is-collapsed");
-      }
-    });
-    obs.observe(deck, { childList:true, subtree:false });
-  }
   // ---------------- Edit modal ----------------
   function openEditModal() {
     const initName = profileState.nickname || "pilot";
@@ -1081,6 +1129,7 @@
         </div>
       </div>`);
     if (!ctl) return;
+
     ctl.contentEl.querySelector("[data-sm-close]")?.addEventListener("click", ctl.close);
 
     const pickBtn = ctl.contentEl.querySelector("#smPickAvatar");
@@ -1099,8 +1148,14 @@
       fileInp.value = "";
       if (!f) return;
 
-      if (!/^image\//.test(f.type)) { if (hint) hint.textContent = "Please choose an image file."; return; }
-      if (f.size > 8 * 1024 * 1024) { if (hint) hint.textContent = "Image is too large. Use under 8MB."; return; }
+      if (!/^image\//.test(f.type)) {
+        if (hint) hint.textContent = "Please choose an image file.";
+        return;
+      }
+      if (f.size > 8 * 1024 * 1024) {
+        if (hint) hint.textContent = "Image is too large. Use under 8MB.";
+        return;
+      }
 
       try {
         if (hint) hint.textContent = "Uploading avatar…";
@@ -1110,6 +1165,7 @@
         const up = await api(ENDPOINTS.uploadAvatar(), { method: "POST", body: fd });
         const rawUrl = up?.avatar_url || up?.url;
         if (!rawUrl) throw new Error("No avatar_url from backend");
+
         pickedAvatarUrl = normalizeAvatarUrl(String(rawUrl));
 
         if (preview) {
@@ -1121,9 +1177,9 @@
         applyProfileToUI({ nickname: profileState.nickname, avatar_url: pickedAvatarUrl });
         if (hint) hint.textContent = "Uploaded ✅ Click Save to write profile to DB.";
       } catch (e) {
-        if (hint) hint.textContent = (e?.status === 405)
-          ? "Upload blocked (405). Fix CORS/OPTIONS on backend."
-          : "Upload failed. Check backend logs / console.";
+        if (hint)
+          hint.textContent =
+            e?.status === 405 ? "Upload blocked (405). Fix CORS/OPTIONS on backend." : "Upload failed. Check backend logs / console.";
       }
     });
 
@@ -1131,7 +1187,10 @@
       const nickname = (nickInp?.value || "").trim() || "pilot";
       const avatar_url = pickedAvatarUrl || DEFAULT_AVATAR;
 
-      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "Saving…"; }
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Saving…";
+      }
       if (hint) hint.textContent = "Saving…";
 
       try {
@@ -1140,17 +1199,26 @@
         if (saveBtn) saveBtn.textContent = "Saved";
         setTimeout(() => ctl.close(), 650);
       } catch (e) {
-        if (hint) hint.textContent =
-          e?.status === 401 ? "Please log in." :
-          e?.status === 405 ? "Blocked (405). Fix CORS/OPTIONS on backend." :
-          "Save failed.";
-        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "Save"; }
+        if (hint)
+          hint.textContent =
+            e?.status === 401
+              ? "Please log in."
+              : e?.status === 405
+              ? "Blocked (405). Fix CORS/OPTIONS on backend."
+              : "Save failed.";
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Save";
+        }
       }
     });
   }
 
   // ---------------- Init ----------------
   (async function init() {
+    // Session UX v2 first (adds listeners once)
+    initSessionUxV2();
+
     els.startSession?.addEventListener("click", startSessionAndGoMap);
 
     els.how?.addEventListener("click", () => alert("How it works — coming soon"));
@@ -1169,13 +1237,17 @@
     safeText(els.sessionsCount, "Loading…");
     hideWeatherWidget();
 
-    try { await ensureProfile(); } catch (e) {}
+    try {
+      await ensureProfile();
+    } catch (e) {}
 
     els.avatarBtn?.addEventListener("click", () => els.editBtn?.click());
     els.editBtn?.addEventListener("click", async () => {
       const m2 = await getMember(12000);
       if (!m2?.id) return alert("Please log in");
-      try { await ensureProfile(); } catch (e) {}
+      try {
+        await ensureProfile();
+      } catch (e) {}
       openEditModal();
     });
 
