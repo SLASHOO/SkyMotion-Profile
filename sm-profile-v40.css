@@ -9,12 +9,10 @@
   --line:rgba(255,255,255,.10);
 
   --accent:#c99a6e;
-  --outline:#783be2;
+  --outline:rgba(120,59,226,.35); /* ✅ тонко, не “фіолетовий інтерфейс” */
 
   --surface:rgba(255,255,255,.03);
   --surfaceBorder:rgba(255,255,255,.10);
-
-  --radius:18px;
 
   font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color:var(--text);
@@ -24,31 +22,34 @@
   overflow-x:hidden;
 }
 
-/* background vignette like screenshot #2 */
+/* ✅ ФОН СТРОГО #121212 */
 #sm-profile-v40 .bg{
   position:fixed;
   inset:0;
   z-index:-1;
-  background:
-    radial-gradient(1200px 600px at 30% 18%, rgba(201,154,110,.10), transparent 60%),
-    radial-gradient(900px 520px at 70% 8%, rgba(120,59,226,.10), transparent 60%),
-    radial-gradient(900px 700px at 50% 80%, rgba(255,255,255,.04), transparent 60%),
-    var(--bg);
+  background:#121212;
   pointer-events:none;
 }
 
+/* ✅ Центрування по висоті (не прибитий до верху) */
 #sm-profile-v40 .wrap{
   --hdrH: clamp(72px, 10vh, 120px);
   max-width:1160px;
   margin:0 auto;
   padding: 0 34px 92px;
-  padding-top: calc(var(--hdrH) + 22px) !important;
+  padding-top: calc(var(--hdrH) + 18px) !important;
+
+  /* ключ: даємо “повітря” зверху і центримо блок */
+  min-height: calc(100vh - var(--hdrH));
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
 }
 @media (max-width:700px){
   #sm-profile-v40 .wrap{
     --hdrH: clamp(72px, 12vh, 140px);
     padding: 0 18px 76px;
-    padding-top: calc(var(--hdrH) + 16px) !important;
+    padding-top: calc(var(--hdrH) + 14px) !important;
   }
 }
 
@@ -58,7 +59,7 @@
   align-items:flex-start;
   justify-content:space-between;
   gap:28px;
-  margin-bottom:40px;
+  margin-bottom:34px;
 }
 #sm-profile-v40 .topInner{ max-width:860px; }
 
@@ -79,28 +80,36 @@
   overflow:hidden;
   margin-top:2px;
 }
-#sm-profile-v40 .avaBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .avaBtn:focus-visible{
+  outline:1px solid var(--outline);
+  outline-offset:2px;
+}
 #sm-profile-v40 .avaImg{ width:100%; height:100%; border-radius:999px; object-fit:cover; display:block; }
 #sm-profile-v40 .avaRing{
   position:absolute; inset:-2px; border-radius:999px; pointer-events:none;
-  box-shadow: 0 0 0 1px rgba(201,154,110,.55), 0 0 18px rgba(201,154,110,.18);
+  box-shadow: 0 0 0 1px rgba(201,154,110,.50), 0 0 18px rgba(201,154,110,.14);
   opacity:.9;
 }
 
 #sm-profile-v40 .userText{ min-width:0; display:flex; flex-direction:column; gap:8px; flex:1; }
 #sm-profile-v40 .helloLine{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
 
+/* ✅ Welcome читабельний */
 #sm-profile-v40 .hello{
   margin:0;
-  font-size:40px;
-  line-height:1.05;
-  font-weight:900;
-  letter-spacing:-0.02em;
+  font-size:38px;
+  line-height:1.06;
+  font-weight:800;
+  letter-spacing:.6px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  font-family:"Londrina Solid", Arial, sans-serif;
+  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
+@media (max-width:767px){
+  #sm-profile-v40 .hello{ font-size:28px; letter-spacing:.4px; }
+}
+
 #sm-profile-v40 .sub{
   margin:10px 0 0;
   color:var(--muted);
@@ -109,7 +118,42 @@
   max-width:620px;
 }
 
-/* CTA right */
+/* ✅ Edit pill (не шлак) */
+#sm-profile-v40 .editPill{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  color:rgba(255,255,255,.88);
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:850;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+#sm-profile-v40 .editPill:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.06);
+  border-color:rgba(201,154,110,.28);
+}
+#sm-profile-v40 .editPill:focus-visible{
+  outline:1px solid var(--outline);
+  outline-offset:2px;
+}
+#sm-profile-v40 .editIcon{
+  width:26px;height:26px;border-radius:999px;
+  display:grid;place-items:center;
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.10);
+  font-size:13px;
+  opacity:.95;
+}
+#sm-profile-v40 .editTxt{ letter-spacing:.3px; }
+
+/* CTA */
 #sm-profile-v40 .topCta{
   display:flex;
   flex-direction:column;
@@ -138,7 +182,10 @@
   background:rgba(255,255,255,.07);
   border-color:rgba(255,255,255,.22);
 }
-#sm-profile-v40 .smBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .smBtn:focus-visible{
+  outline:1px solid var(--outline);
+  outline-offset:2px;
+}
 
 #sm-profile-v40 .smBtnGold{
   padding:12px 18px;
@@ -150,34 +197,31 @@
   align-items:center;
   gap:10px;
 }
-#sm-profile-v40 .smBtnGold .chev{
-  font-size:18px;
-  opacity:.9;
-  transform:translateY(-1px);
-}
+#sm-profile-v40 .smBtnGold .chev{ font-size:18px; opacity:.9; transform:translateY(-1px); }
 #sm-profile-v40 .smBtnGold:hover{
   border-color:rgba(201,154,110,.78);
   background:linear-gradient(180deg, rgba(201,154,110,.34), rgba(201,154,110,.18));
   box-shadow:0 22px 60px rgba(0,0,0,.42);
 }
 
+/* How it works link */
 #sm-profile-v40 .howLink{
   display:inline-flex;
   align-items:center;
   gap:8px;
   text-decoration:none;
   color:rgba(255,255,255,.72);
-  font-weight:800;
+  font-weight:850;
   font-size:13px;
-  padding:6px 8px;
+  padding:6px 10px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.10);
-  background:rgba(0,0,0,.20);
+  background:rgba(0,0,0,.18);
 }
 #sm-profile-v40 .howLink:hover{
   color:rgba(255,255,255,.88);
   border-color:rgba(201,154,110,.30);
-  background:rgba(201,154,110,.08);
+  background:rgba(201,154,110,.07);
 }
 #sm-profile-v40 .howLink .q{
   width:18px;height:18px;border-radius:999px;
@@ -187,21 +231,6 @@
   font-weight:900;
   line-height:1;
 }
-
-/* edit */
-#sm-profile-v40 .smEditBtn{
-  padding:9px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
-  color:rgba(255,255,255,.92);
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-}
-#sm-profile-v40 .smEditIcon{ font-size:14px; opacity:.9; transform:translateY(-.5px); }
-#sm-profile-v40 .smEditTxt{ font-weight:900; }
 
 /* GRID */
 #sm-profile-v40 .grid{
@@ -217,7 +246,6 @@
 }
 #sm-profile-v40 .grid, #sm-profile-v40 .grid > *{ min-width:0; }
 
-/* section head */
 #sm-profile-v40 .sectionHead{
   display:flex;
   align-items:center;
@@ -231,7 +259,7 @@
   margin:0;
   font-size:18px;
   font-weight:900;
-  letter-spacing:-0.01em;
+  letter-spacing:.2px;
   color:rgba(255,255,255,.92);
   font-family:"Londrina Solid", Arial, sans-serif;
 }
@@ -245,92 +273,48 @@
   white-space:nowrap;
 }
 #sm-profile-v40 .dot{
-  width:7px; height:7px; border-radius:999px;
+  width:7px;height:7px;border-radius:999px;
   background:var(--accent);
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* see all */
-#sm-profile-v40 .seeAll{
-  display:inline-block;
-  margin-top:10px;
-  color:rgba(255,255,255,.55);
-  text-decoration:none;
-  font-weight:800;
-  font-size:13px;
-}
-#sm-profile-v40 .seeAll:hover{ color:rgba(255,255,255,.78); text-decoration:underline; }
-
-/* SAVED MOVES — make them row-like (not heavy cards) */
+/* Saved moves list (як у тебе) */
 #sm-profile-v40 .list{ display:flex; flex-direction:column; gap:12px; }
-
 #sm-profile-v40 .moveCard{
-  display:flex;
-  align-items:center;
-  gap:14px;
+  display:flex; align-items:center; gap:14px;
   padding:14px 14px;
   border-radius:18px;
   border:1px solid rgba(255,255,255,.10);
   background:rgba(255,255,255,.03);
-  box-shadow:none;
 }
 #sm-profile-v40 .moveCard:hover{
   background:rgba(255,255,255,.045);
   border-color:rgba(255,255,255,.14);
 }
-
 #sm-profile-v40 .moveThumb{
-  width:66px;
-  height:46px;
-  border-radius:14px;
-  overflow:hidden;
+  width:66px; height:46px; border-radius:14px; overflow:hidden;
   flex:0 0 auto;
   background: rgba(0,0,0,.35);
   border:1px solid rgba(255,255,255,.10);
   position:relative;
 }
 #sm-profile-v40 .moveThumb img{ width:100%; height:100%; object-fit:cover; display:block; opacity:.92; }
-
 #sm-profile-v40 .moveThumb .playDot{
-  position:absolute;
-  right:8px;
-  bottom:8px;
-  width:10px;
-  height:10px;
-  border-radius:999px;
+  position:absolute; right:8px; bottom:8px;
+  width:10px; height:10px; border-radius:999px;
   background: rgba(201,154,110,.98);
   box-shadow: 0 0 0 3px rgba(201,154,110,.18);
 }
-
 #sm-profile-v40 .moveMain{ min-width:0; flex:1; }
-#sm-profile-v40 .moveTitle{
-  font-weight:900;
-  font-size:16px;
-  color: rgba(255,255,255,.92);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-#sm-profile-v40 .moveMeta2{
-  margin-top:4px;
-  font-size:13px;
-  color: rgba(255,255,255,.60);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+#sm-profile-v40 .moveTitle{ font-weight:900; font-size:16px; color:rgba(255,255,255,.92); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#sm-profile-v40 .moveMeta2{ margin-top:4px; font-size:13px; color:rgba(255,255,255,.60); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-/* icon buttons smaller like target */
 #sm-profile-v40 .moveActions{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
-
 #sm-profile-v40 .smIconBtn{
-  width:38px;
-  height:38px;
-  border-radius:14px;
+  width:38px;height:38px;border-radius:14px;
   border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.05);
-  display:grid;
-  place-items:center;
+  display:grid; place-items:center;
   cursor:pointer;
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
@@ -339,15 +323,29 @@
   border-color: rgba(201,154,110,.35);
   background: rgba(201,154,110,.08);
 }
-#sm-profile-v40 .smDanger:hover{
-  border-color: rgba(255,90,31,.50);
-  background: rgba(255,90,31,.12);
+#sm-profile-v40 .smIconBtn:focus-visible{
+  outline:1px solid var(--outline);
+  outline-offset:2px;
 }
-#sm-profile-v40 .smIconBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.88); }
+#sm-profile-v40 .smDanger:hover{ border-color: rgba(255,90,31,.50); background: rgba(255,90,31,.12); }
+#sm-profile-v40 .smIconBtn svg{ width:18px;height:18px; fill: rgba(255,255,255,.88); }
 
-#sm-profile-v40 .moveCard.isDeleting{ opacity:.55; pointer-events:none; }
+/* ✅ Session History: показуємо максимум 3 (через max-height + overflow hidden) */
+#sm-profile-v40 .sessionWrap{
+  border-radius:18px;
+}
+#sm-profile-v40 .sessionWrap.is-collapsed{
+  /* 3 картки: приблизна висота, включаючи gap */
+  max-height: 520px;
+  overflow:hidden;
+  mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+}
+#sm-profile-v40 .sessionWrap.is-expanded{
+  max-height:none;
+  overflow:visible;
+  mask-image:none;
+}
 
-/* SESSION HISTORY cards */
 #sm-profile-v40 .sessionDeck{ display:flex; flex-direction:column; gap:12px; }
 #sm-profile-v40 .sessOverlay{ display:none !important; }
 
@@ -358,20 +356,18 @@
   border:1px solid rgba(255,255,255,.10);
   background: var(--bg);
   box-shadow: 0 24px 80px rgba(0,0,0,.42);
-  cursor:pointer;
   user-select:none;
   outline:none;
   transition:transform .18s ease, border-color .18s ease;
+  cursor:default;            /* ✅ не виглядає клікабельною */
 }
 #sm-profile-v40 .sessCard:hover{
   transform:translateY(-2px);
   border-color:rgba(255,255,255,.18);
 }
-
 #sm-profile-v40 .sessCard::before{
   content:"";
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background-image: var(--cover);
   background-size: cover;
   background-position: center;
@@ -381,82 +377,54 @@
 }
 #sm-profile-v40 .sessCard::after{
   content:"";
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   pointer-events:none;
   background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.30) 42%, rgba(0,0,0,.62) 100%);
   z-index:1;
 }
-
 #sm-profile-v40 .sessInner{ position:relative; z-index:2; padding:16px 16px 14px; }
-#sm-profile-v40 .sessTopRow{ display:flex; align-items:center; justify-content:flex-start; gap:10px; margin-bottom:14px; min-width:0; }
 
 #sm-profile-v40 .sessDelBtn{
-  position:absolute;
-  top:10px;
-  right:10px;
-  z-index:3;
-  width:34px;
-  height:34px;
-  border-radius:14px;
+  position:absolute; top:10px; right:10px; z-index:3;
+  width:34px;height:34px;border-radius:14px;
   border:1px solid rgba(255,255,255,.14);
   background: rgba(0,0,0,.28);
-  display:grid;
-  place-items:center;
+  display:grid; place-items:center;
   cursor:pointer;
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
 #sm-profile-v40 .sessDelBtn:hover{ transform: translateY(-1px); border-color: rgba(255,90,31,.55); background: rgba(255,90,31,.14); }
-#sm-profile-v40 .sessDelBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.88); }
+#sm-profile-v40 .sessDelBtn:focus-visible{ outline:1px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .sessDelBtn svg{ width:18px;height:18px; fill: rgba(255,255,255,.88); }
 
-#sm-profile-v40 .sessDate{
-  font-size:20px;
-  font-weight:900;
-  letter-spacing:-0.02em;
-  color:rgba(255,255,255,.94);
-  line-height:1.15;
-  font-family:"Londrina Solid", Arial, sans-serif;
-}
-#sm-profile-v40 .sessCity{
-  margin-top:6px;
+/* ✅ кнопка see all для sessions */
+#sm-profile-v40 .seeAllBtn{
+  margin-top:10px;
+  appearance:none;
+  border:none;
+  background:transparent;
+  color:rgba(255,255,255,.55);
+  font-weight:800;
   font-size:13px;
-  color:rgba(255,255,255,.72);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:320px;
+  cursor:pointer;
+  padding:6px 0;
+  text-align:left;
 }
-#sm-profile-v40 .sessBottom{
-  margin-top:12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  color:rgba(255,255,255,.66);
-  font-size:12px;
-}
+#sm-profile-v40 .seeAllBtn:hover{ color:rgba(255,255,255,.78); text-decoration:underline; }
+#sm-profile-v40 .seeAllBtn:focus-visible{ outline:1px solid var(--outline); outline-offset:2px; border-radius:10px; }
 
-#sm-profile-v40 .sessPill{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.22);
-  backdrop-filter: blur(10px);
-  color:rgba(255,255,255,.78);
-  font-weight:900;
-  font-size:11.5px;
-  white-space:nowrap;
+/* shared see all */
+#sm-profile-v40 .seeAll{
+  display:inline-block;
+  margin-top:10px;
+  color:rgba(255,255,255,.55);
+  text-decoration:none;
+  font-weight:800;
+  font-size:13px;
 }
-#sm-profile-v40 .sessPill .pDot{
-  width:6px; height:6px; border-radius:999px;
-  background:rgba(201,154,110,.98);
-  box-shadow:0 0 0 2px rgba(201,154,110,.14);
-}
+#sm-profile-v40 .seeAll:hover{ color:rgba(255,255,255,.78); text-decoration:underline; }
 
-/* Weather pill keeps working (your svg classes remain) */
+/* Weather pill лишаємо як у тебе (мінімально) */
 #sm-profile-v40 .sessWeather{
   position:relative;
   display:inline-flex;
@@ -475,25 +443,12 @@
   text-overflow:ellipsis;
   backdrop-filter: blur(10px);
 }
-#sm-profile-v40 .sessWeather .wIconWrap{ width:18px; height:18px; display:grid; place-items:center; }
-#sm-profile-v40 .sessWeather svg{ width:18px; height:18px; display:block; }
+#sm-profile-v40 .sessWeather .wIconWrap{ width:18px;height:18px; display:grid; place-items:center; }
+#sm-profile-v40 .sessWeather svg{ width:18px;height:18px; display:block; }
 
-/* MODAL — as you had */
-#sm-profile-v40 .sm-modal{
-  position:fixed; inset:0; z-index:9999;
-  display:flex; align-items:center; justify-content:center;
-  padding:18px; pointer-events:none;
-}
+/* Modal лишив як було — не чіпаю */
+#sm-profile-v40 .sm-modal{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:18px; pointer-events:none; }
 #sm-profile-v40 .sm-modal[aria-hidden="true"]{ opacity:0; visibility:hidden; transition:opacity .12s ease, visibility .12s ease; }
 #sm-profile-v40 .sm-modal[aria-hidden="false"]{ opacity:1; visibility:visible; transition:opacity .12s ease; pointer-events:auto; }
 #sm-profile-v40 .sm-modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.62); backdrop-filter: blur(6px); }
-#sm-profile-v40 .sm-modal__content{
-  position:relative; z-index:2;
-  width:min(760px, 100%);
-  max-height:min(84vh, 760px);
-  overflow:auto;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(18,18,18,.92);
-  box-shadow:0 30px 120px rgba(0,0,0,.6);
-}
+#sm-profile-v40 .sm-modal__content{ position:relative; z-index:2; width:min(760px, 100%); max-height:min(84vh, 760px); overflow:auto; border-radius:18px; border:1px solid rgba(255,255,255,.12); background:rgba(18,18,18,.92); box-shadow:0 30px 120px rgba(0,0,0,.6); }
