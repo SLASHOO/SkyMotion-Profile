@@ -1,8 +1,9 @@
 /* =========================================================
-   SKYMOTION PROFILE v40 — FULL JS (FIXED / CONSISTENT)
+   SKYMOTION PROFILE v40 — FULL JS (UPDATED)
+   - ✅ Added your 2 requested functions (integrated safely)
+   - ✅ Sessions: show only 2 cards by default + "see all" link logic
+   - ✅ Session card click opens "Coming Soon" modal (delete still works)
    - ✅ No broken brackets (IIFE closures correct)
-   - ✅ Session UX v2 integrated cleanly (2 cards collapsed + toggle + block open)
-   - ✅ Keeps your API logic / rendering / delete logic
 ========================================================= */
 
 (() => {
@@ -16,7 +17,6 @@
 
   const API_BASE = String(window.SM_API_BASE || "https://skymotion.onrender.com").replace(/\/$/, "");
 
-  // ✅ Single routes source of truth
   const ROUTES = { profile: "/profile", map: "/map", cam: "/assistant", library: "/libraryy" };
 
   const ENDPOINTS = {
@@ -48,9 +48,6 @@
     modalContent: $("#smModalContent"),
 
     weather: $("#smWeatherWidget"),
-
-    // UX v2 toggle (button or link you have in HTML)
-    sessionsToggle: $("#smSessionsToggle"),
   };
 
   function safeText(el, t) {
@@ -345,7 +342,7 @@
     return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7h10v10h-2V10.41l-9.29 9.3-1.42-1.42 9.3-9.29H10V7z"/><path d="M5 5h6v2H7v10h10v-4h2v6H5V5z"/></svg>`;
   }
 
-  // ---------------- Weather widget ----------------
+  // ---------------- Weather widget helpers ----------------
   function smNum(v) {
     const n = Number(v);
     return Number.isFinite(n) ? n : null;
@@ -398,8 +395,7 @@
   }
 
   function svgForWeather(type) {
-    if (type === "sun")
-      return `
+    if (type === "sun") return `
       <svg class="smWxSun" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="sunRays">
           <circle cx="27" cy="27" r="10" fill="rgba(255,180,60,.95)"></circle>
@@ -414,10 +410,10 @@
             <rect x="42" y="36" width="2" height="8" rx="1" transform="rotate(-45 43 40)"></rect>
           </g>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
-    if (type === "rain")
-      return `
+    if (type === "rain") return `
       <svg class="smWxRain" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -428,10 +424,10 @@
           <rect class="drop d2" x="26" y="34" width="2" height="8" rx="1"></rect>
           <rect class="drop d3" x="34" y="34" width="2" height="8" rx="1"></rect>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
-    if (type === "snow")
-      return `
+    if (type === "snow") return `
       <svg class="smWxSnow" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -442,10 +438,10 @@
           <circle class="flake f2" cx="28" cy="38" r="1.8"></circle>
           <circle class="flake f3" cx="36" cy="38" r="1.8"></circle>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
-    if (type === "wind")
-      return `
+    if (type === "wind") return `
       <svg class="smWxWind" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g fill="none" stroke="rgba(255,255,255,.80)" stroke-width="3" stroke-linecap="round">
           <path d="M14 22c6 0 10-3 16-3 4 0 6 2 6 4 0 2-2 4-5 4"></path>
@@ -462,10 +458,10 @@
         <g class="gust g3" fill="none" stroke="rgba(160,220,255,.35)" stroke-width="2" stroke-linecap="round">
           <path d="M8 36h12"></path>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
-    if (type === "storm")
-      return `
+    if (type === "storm") return `
       <svg class="smWxStorm" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
@@ -476,10 +472,10 @@
           <rect class="drop d1" x="16" y="34" width="2" height="8" rx="1"></rect>
           <rect class="drop d2" x="34" y="34" width="2" height="8" rx="1"></rect>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
-    if (type === "fog")
-      return `
+    if (type === "fog") return `
       <svg class="smWxCloud" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
         <g class="cloud">
           <path d="M18 30c-4.4 0-8-3.1-8-7 0-3.4 2.8-6.3 6.6-6.9C18 12.3 21 10 25 10c5.1 0 9.3 3.9 9.6 8.9 4 .6 7 3.4 7 7.1 0 3.9-3.6 7-8 7H18z"
@@ -489,7 +485,8 @@
           <path d="M14 36h26"></path>
           <path d="M16 40h22"></path>
         </g>
-      </svg>`;
+      </svg>
+    `;
 
     return `
       <svg class="smWxCloud" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
@@ -497,13 +494,14 @@
           <path d="M18 32c-4.4 0-8-3.2-8-7.2 0-3.5 2.8-6.5 6.6-7.1C18 13.6 21 11 25 11c5.1 0 9.3 4 9.6 9.1 4 .6 7 3.5 7 7.3 0 4-3.6 7.2-8 7.2H18z"
             fill="rgba(255,255,255,.78)"/>
         </g>
-      </svg>`;
+      </svg>
+    `;
   }
 
   function weatherPillHtml(weather_json, city) {
     if (!weather_json) return "";
-
     const w = weather_json || {};
+
     const temp =
       smNum(pickDeep(w, ["temp", "temperature", "current.temperature", "current.temp", "main.temp"])) ??
       smNum(pickDeep(w, ["air_temperature", "t"])) ??
@@ -593,12 +591,12 @@
       smNum(pickDeep(w, ["wind_kph", "wind_kmh", "wind.speed", "current.windspeed", "wind_speed", "wind"])) ?? null;
 
     const desc = (pickDeep(w, ["description", "desc", "current.description", "weather[0].description", "summary", "condition"]) || "").toString();
-
     const type = normalizeWeatherType(w);
     const iconSvg = svgForWeather(type);
 
     const tempTxt = temp == null ? "—" : `${Math.round(temp)}°`;
     const windTxt = wind == null ? "" : `Wind ${Math.round(wind)} km/h`;
+
     const fallbackDesc =
       type === "sun"
         ? "Clear"
@@ -856,97 +854,85 @@
     }
   }
 
-  function openSessionFallbackModal(s) {
-    const id = getSessionId(s);
-    const city = getSessionCity(s);
-    const dt = formatDateTime(s?.ended_at || s?.started_at);
-    const cover = getSessionCover(s);
+  // ---------------- YOUR 2 FUNCTIONS (INTEGRATED) ----------------
+  function initSessionHistoryLimitAndSeeAll() {
+    const sessionsArea = document.getElementById("sm-sessionsArea");
+    const seeAllLink = document.querySelector('section[aria-label="Session History"] .link');
+    if (!sessionsArea || !seeAllLink) return;
 
-    const coverHtml = cover
-      ? `<div class="sheetCard"><img src="${escapeHtml(cover)}" alt="" style="width:100%; border-radius:14px; display:block;" /></div>`
-      : "";
+    function applyLimit() {
+      const cards = sessionsArea.querySelectorAll(".sessCard");
+      cards.forEach((card, index) => {
+        card.style.display = index < 2 ? "" : "none";
+      });
+      seeAllLink.style.display = cards.length > 2 ? "inline-block" : "none";
+    }
 
-    const ctl = openModal(`
-      <div class="sessionSheet">
-        <div class="sheetTop">
-          <div class="sheetTitle">${escapeHtml(dt.date)} — ${escapeHtml(city)}</div>
-          <button class="sheetClose" type="button" data-sm-close aria-label="Close">✕</button>
-        </div>
-        <div class="sheetBody">
-          ${coverHtml}
-          <div class="sheetCard">
-            <div style="font-weight:850; margin-bottom:6px;">Session</div>
-            <pre style="margin:0; white-space:pre-wrap; color:rgba(255,255,255,.82); font-size:12px; line-height:1.55;">${escapeHtml(
-              JSON.stringify(s, null, 2)
-            )}</pre>
-          </div>
-          ${
-            id
-              ? `<div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="smBtn smBtnPrimary" type="button" id="smDeleteSessionFromModal">Delete session</button>
-          </div>`
-              : ``
-          }
-        </div>
-      </div>`);
-    if (!ctl) return;
+    applyLimit();
 
-    ctl.contentEl.querySelector("[data-sm-close]")?.addEventListener("click", ctl.close);
+    // re-apply when sessions re-render
+    if (window.MutationObserver) {
+      const obs = new MutationObserver(() => applyLimit());
+      obs.observe(sessionsArea, { childList: true, subtree: false });
+    }
 
-    const delBtn = ctl.contentEl.querySelector("#smDeleteSessionFromModal");
-    delBtn?.addEventListener("click", async () => {
-      if (!id) return;
-      if (!confirm("Delete this session from history?")) return;
-      delBtn.disabled = true;
-      delBtn.textContent = "Deleting…";
-      try {
-        await deleteSessionById(id);
-        ctl.close();
-        await loadSessions();
-      } catch (e) {
-        delBtn.disabled = false;
-        delBtn.textContent = "Delete session";
-        alert(e?.status === 405 ? "Delete blocked (405). Fix CORS/OPTIONS on backend." : "Failed to delete session.");
-      }
+    seeAllLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      const cards = sessionsArea.querySelectorAll(".sessCard");
+      cards.forEach((card) => (card.style.display = ""));
+      seeAllLink.style.display = "none";
     });
   }
 
-  // === Session UX v2 state (2 cards collapsed + toggle) ===
-  function initSessionUxV2() {
-    const deck = els.sessionsArea;
-    const toggle = els.sessionsToggle;
+  function initComingSoonModalIntercept() {
+    const modal = document.getElementById("smModal");
+    const modalContent = document.getElementById("smModalContent");
+    const backdrop = document.getElementById("smModalBackdrop");
+    if (!modal || !modalContent || !backdrop) return;
 
-    if (deck) deck.classList.add("is-collapsed");
-
-    if (toggle && deck) {
-      const setLabel = () => {
-        const collapsed = deck.classList.contains("is-collapsed");
-        toggle.textContent = collapsed ? "see all" : "collapse";
-      };
-      setLabel();
-
-      toggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        deck.classList.toggle("is-collapsed");
-        setLabel();
-      });
+    function closeModal() {
+      modal.setAttribute("aria-hidden", "true");
     }
 
-    // Hard block open (capture phase) but allow delete button
-    ROOT.addEventListener(
+    function openComingSoon() {
+      modalContent.innerHTML = `
+        <div class="sessionSheet">
+          <div class="sheetTop">
+            <div class="sheetTitle">Session Details</div>
+            <button class="sheetClose" id="closeComing">✕</button>
+          </div>
+          <div class="sheetBody">
+            <div class="sheetCard" style="text-align:center;padding:40px 20px;">
+              <h3 style="margin:0 0 10px 0;font-size:18px;">Coming Soon</h3>
+              <p style="margin:0;color:rgba(255,255,255,.6);font-size:14px;">
+                Session details are currently in development.
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+      modal.setAttribute("aria-hidden", "false");
+      const closeBtn = document.getElementById("closeComing");
+      if (closeBtn) closeBtn.onclick = closeModal;
+    }
+
+    backdrop.addEventListener("click", closeModal);
+
+    // Intercept session clicks BUT keep delete button working
+    document.addEventListener(
       "click",
-      (e) => {
-        if (e.target.closest(".sessDelBtn")) return;
+      function (e) {
+        if (e.target.closest(".sessDelBtn")) return; // allow delete clicks
         const card = e.target.closest(".sessCard");
         if (!card) return;
         e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
+        openComingSoon();
       },
       true
     );
   }
 
+  // ---------------- Sessions render ----------------
   function renderSessions(list) {
     const area = els.sessionsArea;
     if (!area) return;
@@ -963,10 +949,7 @@
     let live = rows.slice();
 
     const paint = () => {
-      const keepCollapsed = area.classList.contains("is-collapsed");
       area.innerHTML = "";
-      if (keepCollapsed) area.classList.add("is-collapsed");
-
       safeText(els.sessionsCount, `${live.length} sessions`);
 
       live.forEach((s) => {
@@ -975,6 +958,7 @@
         const moves = getSessionMovesCount(s);
         const cover = getSessionCover(s);
         const dt = formatDateTime(s?.ended_at || s?.started_at);
+
         const weather = s?.weather_json || s?.weather || null;
 
         const card = document.createElement("div");
@@ -1010,9 +994,6 @@
         `;
 
         if (!weather && id) hydrateSessionWeatherIntoCard(card, id);
-
-        // NOTE: card click open is intentionally blocked by Session UX v2 capture listener.
-        // If you ever want to re-enable later, remove that capture listener.
 
         card.querySelector(".sessDelBtn")?.addEventListener("click", async (e) => {
           e.preventDefault();
@@ -1216,15 +1197,15 @@
 
   // ---------------- Init ----------------
   (async function init() {
-    // Session UX v2 first (adds listeners once)
-    initSessionUxV2();
-
     els.startSession?.addEventListener("click", startSessionAndGoMap);
-
     els.how?.addEventListener("click", () => alert("How it works — coming soon"));
 
     safeText(els.username, "pilot");
     setAvatar(DEFAULT_AVATAR);
+
+    // ✅ Add your 2 functions (run once)
+    initSessionHistoryLimitAndSeeAll();
+    initComingSoonModalIntercept();
 
     const m = await getMember(12000);
     if (m?.id) {
