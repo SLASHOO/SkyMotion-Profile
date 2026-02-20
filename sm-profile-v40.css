@@ -549,6 +549,101 @@
   font-weight: 650 !important;
 }
 
+/* =========================
+   EDIT MODAL — Visual upgrade
+========================= */
+
+/* modal glass look */
+#sm-profile-v40 .sm-modal__content{
+  border-radius:20px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background: rgba(18,18,18,.92) !important;
+  box-shadow: 0 40px 140px rgba(0,0,0,.70) !important;
+}
+
+/* sheet base (used by coming soon too) */
+#sm-profile-v40 .smSheet{ padding:14px; }
+#sm-profile-v40 .smSheetHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+#sm-profile-v40 .smSheetTitle{
+  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size:14px;
+  font-weight:750;
+  letter-spacing:-0.01em;
+  color:rgba(255,255,255,.92);
+}
+#sm-profile-v40 .smX{
+  width:36px; height:36px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+#sm-profile-v40 .smX:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.20);
+}
+#sm-profile-v40 .smX:focus-visible{
+  outline:2px solid rgba(120,59,226,.35);
+  outline-offset:2px;
+}
+
+#sm-profile-v40 .smSheetBody{ padding:14px 10px 10px; }
+
+/* Coming soon card */
+#sm-profile-v40 .smSoon{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius:16px;
+  padding:26px 18px;
+  text-align:center;
+}
+#sm-profile-v40 .smSoonIcon{
+  font-size:26px;
+  margin-bottom:10px;
+  opacity:.92;
+}
+#sm-profile-v40 .smSoonTitle{
+  font-family: "Londrina Solid", Arial, sans-serif;
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+#sm-profile-v40 .smSoonText{
+  font-size:13px;
+  color: rgba(255,255,255,.64);
+  line-height:1.55;
+  max-width:440px;
+  margin:0 auto 14px;
+}
+
+/* Ghost button variant */
+#sm-profile-v40 .smBtnGhost{
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+}
+
+/* Bronze button polish */
+#sm-profile-v40 .smBtnPrimary{
+  border-color: rgba(201,154,110,.62) !important;
+  background: rgba(201,154,110,.18) !important;
+  box-shadow: 0 0 0 1px rgba(120,59,226,.18); /* barely visible purple rim */
+}
+#sm-profile-v40 .smBtnPrimary:hover{
+  box-shadow: 0 0 0 1px rgba(120,59,226,.22);
+}
+
 /* 5) Section titles keep Londrina but less “bold feeling” */
 #sm-profile-v40 h2{
   font-size: 16px !important;            /* було 18 */
