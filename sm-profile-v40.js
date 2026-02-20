@@ -978,6 +978,74 @@
     }
   }
 
+
+  /* =========================================================
+   PROFILE v40 — SESSION UX v2 PATCH (SAFE)
+   - Session History: show 2 by default, "see all" toggles
+   - Disable session card open on click (delete stays working)
+   - DOES NOT touch your API logic / rendering logic
+   - Works even if sessions are re-rendered later
+========================================================= */
+
+(function(){
+  const root = document.getElementById("sm-profile-v40");
+  if(!root) return;
+
+  const deck = root.querySelector("#sm-sessionsArea");
+  const toggle = root.querySelector("#smSessionsToggle");
+
+  // 1) Default collapsed (2 cards)
+  if(deck) deck.classList.add("is-collapsed");
+
+  // 2) Toggle see all / collapse (pure class toggle)
+  if(toggle && deck){
+    const setLabel = () => {
+      const collapsed = deck.classList.contains("is-collapsed");
+      toggle.textContent = collapsed ? "see all" : "collapse";
+    };
+    setLabel();
+
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      deck.classList.toggle("is-collapsed");
+      setLabel();
+    });
+  }
+
+  // 3) HARD block session card click -> no modal open.
+  //    Keep delete working.
+  //    Capture phase so it intercepts BEFORE your old listeners.
+  root.addEventListener("click", (e) => {
+    // allow delete button clicks
+    if(e.target.closest(".sessDelBtn")) return;
+
+    // if click on session card -> block
+    const card = e.target.closest(".sessCard");
+    if(!card) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }, true);
+
+  // 4) If sessions are re-rendered and deck loses class, enforce again
+  //    (lightweight observer, no API touch)
+  if(deck && window.MutationObserver){
+    const obs = new MutationObserver(() => {
+      // keep collapsed state default unless user expanded
+      // (if user expanded, we keep it as is)
+      // so do nothing if toggle already expanded
+      // but if deck lost both states, set collapsed.
+      if(!deck.classList.contains("is-collapsed") && toggle && toggle.textContent === "collapse"){
+        return;
+      }
+      if(!deck.classList.contains("is-collapsed") && toggle && toggle.textContent === "see all"){
+        // user not expanded, keep collapsed
+        deck.classList.add("is-collapsed");
+      }
+    });
+    obs.observe(deck, { childList:true, subtree:false });
+  }
   // ---------------- Edit modal ----------------
   function openEditModal() {
     const initName = profileState.nickname || "pilot";
