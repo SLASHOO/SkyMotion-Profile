@@ -1,17 +1,10 @@
-/* =========================================================
-   SKY MOTION — PROFILE v40 (CLEAN / NEW PALETTE)
-   Palette: bg #121212, accent #c99a6e, outline #783be2
-   Fonts: Arial base, Londrina Solid for headings
-========================================================= */
-
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400;900&display=swap');
 
 #sm-profile-v40.smProfile{
   --bg:#121212;
-
   --text:rgba(255,255,255,.92);
   --muted:rgba(255,255,255,.64);
-  --muted2:rgba(255,255,255,.44);
+  --muted2:rgba(255,255,255,.46);
   --line:rgba(255,255,255,.10);
 
   --accent:#c99a6e;
@@ -20,51 +13,51 @@
   --surface:rgba(255,255,255,.03);
   --surfaceBorder:rgba(255,255,255,.10);
 
-  --radius:18px;
-
   font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color:var(--text);
-  background:var(--bg);
+  background:transparent;
   -webkit-font-smoothing:antialiased;
-  text-rendering:geometricPrecision;
   overflow-x:hidden;
 }
 
-/* wrapper spacing under your site header */
+/* soft vignette like screenshot #2 */
+#sm-profile-v40 .bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(1100px 520px at 55% -10%, rgba(201,154,110,.12), transparent 55%),
+    radial-gradient(900px 520px at 10% 5%, rgba(120,59,226,.10), transparent 55%),
+    radial-gradient(1200px 900px at 50% 70%, rgba(255,255,255,.03), transparent 60%),
+    linear-gradient(180deg, rgba(18,18,18,1), rgba(18,18,18,1));
+  opacity:1;
+}
+
 #sm-profile-v40 .wrap{
   --hdrH: clamp(72px, 10vh, 120px);
   max-width:1160px;
   margin:0 auto;
   padding: 0 34px 92px;
-  padding-top: calc(var(--hdrH) + 22px) !important;
-  overflow-x:hidden;
+  padding-top: calc(var(--hdrH) + 18px) !important;
 }
 @media (max-width:700px){
   #sm-profile-v40 .wrap{
-    --hdrH: clamp(72px, 12vh, 140px);
     padding: 0 18px 76px;
-    padding-top: calc(var(--hdrH) + 16px) !important;
+    padding-top: calc(var(--hdrH) + 12px) !important;
   }
 }
 
-/* ---------------------------------------------------------
-   TOP / HEADER
---------------------------------------------------------- */
+/* TOP */
 #sm-profile-v40 .top{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:28px;
-  margin-bottom:40px;
+  margin-bottom:34px;
 }
-#sm-profile-v40 .topInner{ max-width:980px; }
+#sm-profile-v40 .topInner{ max-width:860px; }
 
-#sm-profile-v40 .userHead{
-  display:flex;
-  align-items:flex-start;
-  gap:14px;
-}
-
+#sm-profile-v40 .userHead{ display:flex; align-items:flex-start; gap:14px; }
 #sm-profile-v40 .avaBtn{
   width:54px; height:54px; border-radius:999px;
   background:rgba(255,255,255,.06);
@@ -74,47 +67,26 @@
   place-items:center;
   cursor:pointer;
   position:relative;
-  flex:0 0 auto;
-  box-shadow:0 14px 30px rgba(0,0,0,.35);
   overflow:hidden;
+  box-shadow:0 14px 30px rgba(0,0,0,.35);
   margin-top:2px;
 }
-#sm-profile-v40 .avaBtn:focus-visible{
-  outline:2px solid var(--outline);
-  outline-offset:2px;
-}
-#sm-profile-v40 .avaImg{
-  width:100%;
-  height:100%;
-  border-radius:999px;
-  object-fit:cover;
-  display:block;
-}
+#sm-profile-v40 .avaBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .avaImg{ width:100%; height:100%; border-radius:999px; object-fit:cover; display:block; }
 #sm-profile-v40 .avaRing{
   position:absolute; inset:-2px; border-radius:999px; pointer-events:none;
   box-shadow: 0 0 0 1px rgba(201,154,110,.55), 0 0 18px rgba(201,154,110,.18);
-  opacity:.85;
+  opacity:.9;
 }
 
-#sm-profile-v40 .userText{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  flex:1;
-}
-#sm-profile-v40 .helloLine{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
+#sm-profile-v40 .userText{ min-width:0; display:flex; flex-direction:column; gap:8px; flex:1; }
+#sm-profile-v40 .helloLine{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
 
 #sm-profile-v40 .hello{
   margin:0;
-  font-size:34px;
-  line-height:1.1;
-  font-weight:650;
+  font-size:38px;
+  line-height:1.05;
+  font-weight:900;
   letter-spacing:-0.02em;
   white-space:nowrap;
   overflow:hidden;
@@ -122,7 +94,7 @@
   font-family:"Londrina Solid", Arial, sans-serif;
 }
 #sm-profile-v40 .sub{
-  margin:12px 0 0;
+  margin:10px 0 0;
   color:var(--muted);
   font-size:14px;
   line-height:1.55;
@@ -130,92 +102,90 @@
 }
 #sm-profile-v40 .brandRule{
   height:2px;
-  width:148px;
+  width:156px;
   border-radius:999px;
-  background:linear-gradient(90deg, rgba(201,154,110,.95), rgba(120,59,226,.55));
-  opacity:.75;
-  margin-top:16px;
+  background:linear-gradient(90deg, rgba(201,154,110,.95), rgba(120,59,226,.60));
+  opacity:.85;
+  margin-top:14px;
 }
 
-@media (max-width:767px){
-  #sm-profile-v40 .avaBtn{ width:48px; height:48px; }
-  #sm-profile-v40 .hello{ font-size:26px; }
-  #sm-profile-v40 .helloLine{ align-items:flex-start; }
-  #sm-profile-v40 .brandRule{ display:none; }
-}
-@media (max-width:479px){
-  #sm-profile-v40 .hello{ font-size:24px; }
-  #sm-profile-v40 .smEditTxt{ display:none; }
-}
-@media (max-width: 767px) and (orientation: portrait){
-  #sm-profile-v40 .avaBtn{ display:none; }
-  #sm-profile-v40 .userHead{ gap:0; }
-}
-
-/* ---------------------------------------------------------
-   BUTTONS
---------------------------------------------------------- */
 #sm-profile-v40 .smBtn{
   appearance:none;
   border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.04);
+  background:rgba(255,255,255,.05);
   color:var(--text);
-  border-radius:12px;
-  padding:10px 12px;
+  border-radius:999px;
+  padding:10px 14px;
   font-size:13px;
-  font-weight:700;
+  font-weight:850;
   cursor:pointer;
-  transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  transition:transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
   user-select:none;
   white-space:nowrap;
 }
 #sm-profile-v40 .smBtn:hover{
   transform:translateY(-1px);
-  background:rgba(255,255,255,.06);
-  border-color:rgba(255,255,255,.20);
+  background:rgba(255,255,255,.07);
+  border-color:rgba(255,255,255,.22);
 }
-#sm-profile-v40 .smBtn:focus-visible{
-  outline:2px solid var(--outline);
-  outline-offset:2px;
-}
-#sm-profile-v40 .smBtn:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-  transform:none;
-}
-
-#sm-profile-v40 .smBtnPrimary{
-  border-color:rgba(201,154,110,.55);
-  background:rgba(201,154,110,.14);
-}
-#sm-profile-v40 .smBtnPrimary:hover{
-  border-color:rgba(201,154,110,.72);
-  background:rgba(201,154,110,.18);
-  box-shadow:0 12px 28px rgba(201,154,110,.10);
-}
-
-/* ultra-thin purple outline option (if you want it visible) */
-#sm-profile-v40 .smBtn.isOutline{
-  border-color:rgba(120,59,226,.35);
-}
+#sm-profile-v40 .smBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
 
 #sm-profile-v40 .smEditBtn{
   padding:9px 12px;
-  border-radius:999px;
   background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
-  color:rgba(255,255,255,.90);
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
+  border:1px solid rgba(255,255,255,.12);
   gap:8px;
 }
 #sm-profile-v40 .smEditIcon{ font-size:14px; opacity:.9; transform:translateY(-.5px); }
-#sm-profile-v40 .smEditTxt{ font-weight:800; }
+#sm-profile-v40 .smEditTxt{ font-weight:900; }
 
-/* ---------------------------------------------------------
-   GRID / SECTIONS
---------------------------------------------------------- */
+/* TOP CTA (right) */
+#sm-profile-v40 .topCta{
+  flex:0 0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+  padding-top:4px;
+}
+#sm-profile-v40 .smBtnPrimary{
+  border-color: rgba(201,154,110,.70);
+  background: rgba(201,154,110,.22);
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  padding:12px 18px;
+  min-width:180px;
+}
+#sm-profile-v40 .smBtnPrimary:hover{
+  border-color: rgba(201,154,110,.88);
+  background: rgba(201,154,110,.28);
+  box-shadow: 0 22px 64px rgba(0,0,0,.45);
+}
+#sm-profile-v40 .ctaArrow{ margin-left:10px; opacity:.9; }
+
+#sm-profile-v40 .howLink{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:750;
+}
+#sm-profile-v40 .howLink:hover{ color:rgba(255,255,255,.88); }
+#sm-profile-v40 .howIcon{
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.86);
+  font-size:12px;
+  font-weight:900;
+}
+
+/* GRID */
 #sm-profile-v40 .grid{
   display:grid;
   grid-template-columns:1.05fr .95fr;
@@ -224,23 +194,12 @@
   margin-top:8px;
 }
 @media (max-width:980px){
+  #sm-profile-v40 .top{ flex-direction:column; align-items:stretch; }
+  #sm-profile-v40 .topCta{ align-items:flex-start; }
   #sm-profile-v40 .grid{ grid-template-columns:1fr; gap:26px; }
-  #sm-profile-v40 .topInner{ max-width:none; }
-}
-#sm-profile-v40 .grid,
-#sm-profile-v40 .grid > *{ min-width:0; }
-
-@media (max-width: 980px) and (orientation: portrait){
-  #sm-profile-v40 .grid{
-    grid-template-columns:1fr;
-    grid-template-areas:
-      "start"
-      "saved";
-  }
-  #sm-profile-v40 .grid > section[aria-label="Saved Moves"]{ grid-area:saved; }
-  #sm-profile-v40 .grid > section[aria-label="Start Shooting Session"]{ grid-area:start; }
 }
 
+/* SECTION HEAD */
 #sm-profile-v40 .sectionHead{
   display:flex;
   align-items:center;
@@ -250,202 +209,82 @@
   border-bottom:1px solid var(--line);
   margin-bottom:16px;
 }
-
 #sm-profile-v40 h2{
   margin:0;
-  font-size:14px;
-  font-weight:700;
+  font-size:16px;
+  font-weight:900;
   letter-spacing:-0.01em;
   color:rgba(255,255,255,.90);
   font-family:"Londrina Solid", Arial, sans-serif;
 }
-
 #sm-profile-v40 .count{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  font-size:12px;
-  color:var(--muted);
+  font-size:13px;
+  color:rgba(255,255,255,.62);
   user-select:none;
   white-space:nowrap;
 }
 #sm-profile-v40 .dot{
-  width:7px;
-  height:7px;
+  width:7px; height:7px;
   border-radius:999px;
-  background:rgba(201,154,110,.95);
+  background:var(--accent);
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-#sm-profile-v40 .link{
-  color:rgba(201,154,110,.95);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:750;
-  padding:10px 0;
-}
-#sm-profile-v40 .link:hover{ text-decoration:underline; }
-
-/* ---------------------------------------------------------
-   HERO / START SESSION block
---------------------------------------------------------- */
-#sm-profile-v40 .hero{
-  border-radius:var(--radius);
-  padding:22px 22px 18px;
-  background:var(--surface);
-  border:1px solid var(--surfaceBorder);
-  position:relative;
-  overflow:hidden;
-  max-width:100%;
-  min-width:0;
-}
-#sm-profile-v40 .hero::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:3px;
-  background:linear-gradient(180deg, rgba(201,154,110,.95), rgba(120,59,226,.55));
-  opacity:.95;
-}
-#sm-profile-v40 .heroTitle{
-  margin:0;
-  font-size:18px;
-  font-weight:800;
-  letter-spacing:-0.01em;
-  font-family:"Londrina Solid", Arial, sans-serif;
-}
-#sm-profile-v40 .heroDesc{
-  margin:10px 0 0;
-  font-size:13px;
-  line-height:1.6;
-  color:var(--muted);
-  max-width:520px;
-}
-#sm-profile-v40 .heroCta{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:18px;
-}
-#sm-profile-v40 .heroTight{ padding:18px 18px 12px; }
-
-/* ---------------------------------------------------------
-   SAVED MOVES list (cards)
---------------------------------------------------------- */
+/* Saved Moves = ROWS (not cards) */
 #sm-profile-v40 .list{
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:10px;
 }
-
 #sm-profile-v40 .moveCard{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:12px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.10);
-  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-  box-shadow: 0 10px 24px rgba(0,0,0,.22);
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  box-shadow:none;
 }
-
+#sm-profile-v40 .moveCard:hover{
+  background:rgba(255,255,255,.045);
+  border-color:rgba(255,255,255,.12);
+}
 #sm-profile-v40 .moveThumb{
-  width:62px;
-  height:44px;
-  border-radius:12px;
-  overflow:hidden;
-  flex:0 0 auto;
-  background: rgba(0,0,0,.35);
+  width:56px;
+  height:40px;
+  border-radius:14px;
   border:1px solid rgba(255,255,255,.10);
-  position:relative;
-}
-#sm-profile-v40 .moveThumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  opacity:.92;
+  background:rgba(0,0,0,.30);
 }
 #sm-profile-v40 .moveThumb .playDot{
-  position:absolute;
-  right:8px;
-  bottom:8px;
-  width:10px;
-  height:10px;
-  border-radius:999px;
-  background: rgba(201,154,110,.95);
-  box-shadow: 0 0 0 3px rgba(201,154,110,.18);
+  width:9px; height:9px;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(201,154,110,.16);
 }
-
-#sm-profile-v40 .moveMain{ min-width:0; flex:1; }
-#sm-profile-v40 .moveTitle{
-  font-weight:900;
-  font-size:14px;
-  color: rgba(255,255,255,.92);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-#sm-profile-v40 .moveMeta2{
-  margin-top:4px;
-  font-size:12px;
-  color: rgba(255,255,255,.62);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-#sm-profile-v40 .moveActions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:0 0 auto;
-}
-
 #sm-profile-v40 .smIconBtn{
   width:40px;
   height:40px;
   border-radius:14px;
   border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.05);
-  color: rgba(255,255,255,.92);
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  background: rgba(255,255,255,.04);
 }
 #sm-profile-v40 .smIconBtn:hover{
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
   transform: translateY(-1px);
-  border-color: rgba(201,154,110,.35);
-  background: rgba(201,154,110,.10);
-}
-#sm-profile-v40 .smDanger:hover{
-  border-color: rgba(255,90,31,.50);
-  background: rgba(255,90,31,.12);
-}
-#sm-profile-v40 .smIconBtn svg{
-  width:18px;
-  height:18px;
-  fill: rgba(255,255,255,.88);
-}
-#sm-profile-v40 .moveCard.isDeleting{
-  opacity:.55;
-  pointer-events:none;
 }
 
-/* ---------------------------------------------------------
-   SESSION HISTORY cards (single clean layering)
---------------------------------------------------------- */
+/* Session History cards stay premium */
 #sm-profile-v40 .sessionDeck{
   display:flex;
   flex-direction:column;
   gap:12px;
 }
-
-/* if HTML still has .sessOverlay — disable it */
 #sm-profile-v40 .sessOverlay{ display:none !important; }
 
 #sm-profile-v40 .sessCard{
@@ -453,19 +292,16 @@
   border-radius:20px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.10);
-  background: var(--bg); /* fallback if no cover */
+  background: var(--bg);
   box-shadow: 0 24px 80px rgba(0,0,0,.42);
   cursor:pointer;
   user-select:none;
-  outline:none;
   transition:transform .18s ease, border-color .18s ease;
 }
-
 #sm-profile-v40 .sessCard:hover{
   transform:translateY(-2px);
   border-color:rgba(255,255,255,.18);
 }
-
 #sm-profile-v40 .sessCard::before{
   content:"";
   position:absolute;
@@ -477,37 +313,16 @@
   filter: saturate(1.02) contrast(1.02);
   z-index:0;
 }
-
 #sm-profile-v40 .sessCard::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-  background: linear-gradient(
-    180deg,
-    rgba(0,0,0,.18) 0%,
-    rgba(0,0,0,.30) 42%,
-    rgba(0,0,0,.62) 100%
-  );
+  background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.30) 42%, rgba(0,0,0,.62) 100%);
   z-index:1;
 }
+#sm-profile-v40 .sessInner{ position:relative; z-index:2; padding:16px 16px 14px; }
 
-#sm-profile-v40 .sessInner{
-  position:relative;
-  z-index:2;
-  padding:16px 16px 14px;
-}
-
-#sm-profile-v40 .sessTopRow{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  gap:10px;
-  margin-bottom:14px;
-  min-width:0;
-}
-
-/* delete button on session card */
 #sm-profile-v40 .sessDelBtn{
   position:absolute;
   top:10px;
@@ -517,7 +332,7 @@
   height:36px;
   border-radius:14px;
   border:1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.25);
+  background: rgba(0,0,0,.28);
   display:grid;
   place-items:center;
   cursor:pointer;
@@ -528,21 +343,8 @@
   border-color: rgba(255,90,31,.55);
   background: rgba(255,90,31,.14);
 }
-#sm-profile-v40 .sessDelBtn:focus-visible{
-  outline:2px solid var(--outline);
-  outline-offset:2px;
-}
-#sm-profile-v40 .sessDelBtn svg{
-  width:18px;
-  height:18px;
-  fill: rgba(255,255,255,.88);
-}
-#sm-profile-v40 .sessCard.isDeleting{
-  opacity:.55;
-  pointer-events:none;
-}
+#sm-profile-v40 .sessDelBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.88); }
 
-/* session text */
 #sm-profile-v40 .sessDate{
   font-size:18px;
   font-weight:950;
@@ -559,7 +361,6 @@
   overflow:hidden;
   text-overflow:ellipsis;
   max-width:280px;
-  min-width:0;
 }
 #sm-profile-v40 .sessBottom{
   margin-top:12px;
@@ -570,8 +371,6 @@
   color:rgba(255,255,255,.66);
   font-size:12px;
 }
-
-/* moves-count pill */
 #sm-profile-v40 .sessPill{
   display:inline-flex;
   align-items:center;
@@ -579,24 +378,20 @@
   padding:6px 9px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.20);
+  background:rgba(0,0,0,.22);
   backdrop-filter: blur(10px);
-  color:rgba(255,255,255,.74);
-  font-weight:850;
+  color:rgba(255,255,255,.78);
+  font-weight:900;
   font-size:11.5px;
-  white-space:nowrap;
 }
 #sm-profile-v40 .sessPill .pDot{
   width:6px; height:6px; border-radius:999px;
-  background:rgba(201,154,110,.95);
+  background:var(--accent);
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* ---------------------------------------------------------
-   WEATHER PILL (iPhone-ish) — keep your existing SVG classes
---------------------------------------------------------- */
+/* Weather pill - keep your existing SVG logic */
 #sm-profile-v40 .sessWeather{
-  position:relative;
   display:inline-flex;
   align-items:center;
   gap:10px;
@@ -606,239 +401,31 @@
   background:rgba(0,0,0,.26);
   color:rgba(255,255,255,.92);
   font-size:12px;
-  font-weight:850;
+  font-weight:900;
   white-space:nowrap;
   max-width:100%;
   overflow:hidden;
   text-overflow:ellipsis;
   backdrop-filter: blur(10px);
 }
-#sm-profile-v40 .sessWeather .wText{
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-#sm-profile-v40 .sessWeather .wIconWrap{
-  width:22px;
-  height:22px;
-  flex:0 0 auto;
-  display:grid;
-  place-items:center;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,.22));
-}
-#sm-profile-v40 .sessWeather svg{
-  width:22px;
-  height:22px;
-  display:block;
-}
+#sm-profile-v40 .sessWeather .wIconWrap{ width:18px; height:18px; display:grid; place-items:center; }
+#sm-profile-v40 .sessWeather svg{ width:18px; height:18px; display:block; }
 
-/* keep your icon styling if your svg uses these classes */
-#sm-profile-v40 .wIcon .stroke{
-  stroke: rgba(255,255,255,.92);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
+/* see all links */
+#sm-profile-v40 .seeAll{
+  display:inline-block;
+  margin-top:12px;
+  color:rgba(255,255,255,.52);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
 }
-#sm-profile-v40 .wIcon .fillCloud{ fill: rgba(255,255,255,.88); }
-#sm-profile-v40 .wIcon .fillSun{ fill: rgba(201,154,110,.98); }
-#sm-profile-v40 .wIcon .rainDrop{
-  stroke: rgba(120,190,255,.95);
-  stroke-width: 2.0;
-  stroke-linecap: round;
-}
-#sm-profile-v40 .wIcon .snowDot{ fill: rgba(235,245,255,.96); }
-#sm-profile-v40 .wIcon .bolt{ fill: rgba(255,220,120,.98); }
+#sm-profile-v40 .seeAll:hover{ color:rgba(255,255,255,.72); }
 
-/* subtle alive backgrounds */
-#sm-profile-v40 .sessWeather::before,
-#sm-profile-v40 .sessWeather::after{
-  content:"";
-  position:absolute;
-  inset:-40% -30%;
-  pointer-events:none;
-  opacity:0;
+/* mobile tweaks */
+@media (max-width:767px){
+  #sm-profile-v40 .hello{ font-size:28px; }
 }
-
-@keyframes smCloudDrift{
-  0%,100%{ transform:translateX(-2%) translateY(0); }
-  50%{ transform:translateX(2.5%) translateY(-1%); }
-}
-@keyframes smSunPulse{
-  0%,100%{ transform:scale(1); opacity:.55; }
-  50%{ transform:scale(1.05); opacity:.8; }
-}
-@keyframes smRainBg{
-  0%{ transform:translateY(-12%); }
-  100%{ transform:translateY(12%); }
-}
-@keyframes smSnowBg{
-  0%{ transform:translateY(-10%); }
-  100%{ transform:translateY(10%); }
-}
-@keyframes smFogBg{
-  0%,100%{ transform:translateX(-8%); }
-  50%{ transform:translateX(8%); }
-}
-@keyframes smFlash{
-  0%,78%,100%{ opacity:0; }
-  80%{ opacity:.55; }
-  82%{ opacity:0; }
-  88%{ opacity:.35; }
-  90%{ opacity:0; }
-}
-
-#sm-profile-v40 .sessWeather.is-clouds::before{
-  opacity:.55;
-  background:
-    radial-gradient(circle at 25% 45%, rgba(255,255,255,.12), transparent 55%),
-    radial-gradient(circle at 55% 55%, rgba(255,255,255,.10), transparent 58%),
-    radial-gradient(circle at 80% 40%, rgba(255,255,255,.08), transparent 60%);
-  filter: blur(10px);
-  animation: smCloudDrift 6.8s ease-in-out infinite;
-}
-#sm-profile-v40 .sessWeather.is-sun::before{
-  opacity:.65;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(201,154,110,.28), transparent 52%),
-    radial-gradient(circle at 70% 60%, rgba(120,59,226,.18), transparent 58%);
-  filter: blur(12px);
-  animation: smSunPulse 4.8s ease-in-out infinite;
-}
-#sm-profile-v40 .sessWeather.is-rain::before{
-  opacity:.55;
-  background:
-    repeating-linear-gradient(120deg,
-      rgba(255,255,255,.00) 0px,
-      rgba(255,255,255,.00) 10px,
-      rgba(255,255,255,.10) 12px,
-      rgba(255,255,255,.00) 16px);
-  filter: blur(0.2px);
-  animation: smRainBg 1.1s linear infinite;
-}
-#sm-profile-v40 .sessWeather.is-snow::before{
-  opacity:.55;
-  background:
-    radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 2px),
-    radial-gradient(circle, rgba(255,255,255,.14) 1px, transparent 2px),
-    radial-gradient(circle, rgba(255,255,255,.12) 1px, transparent 2px);
-  background-size: 18px 18px, 22px 22px, 28px 28px;
-  background-position: 0 0, 8px 10px, 14px 6px;
-  animation: smSnowBg 2.6s linear infinite;
-}
-#sm-profile-v40 .sessWeather.is-fog::before{
-  opacity:.55;
-  background:
-    linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent),
-    linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
-  filter: blur(6px);
-  animation: smFogBg 5.4s ease-in-out infinite;
-}
-#sm-profile-v40 .sessWeather.is-storm::before{
-  opacity:.60;
-  background:
-    repeating-linear-gradient(120deg,
-      rgba(255,255,255,.00) 0px,
-      rgba(255,255,255,.00) 10px,
-      rgba(255,255,255,.12) 12px,
-      rgba(255,255,255,.00) 16px);
-  animation: smRainBg 0.95s linear infinite;
-}
-#sm-profile-v40 .sessWeather.is-storm::after{
-  opacity:.45;
-  inset:0;
-  background: radial-gradient(circle at 60% 30%, rgba(255,255,255,.18), transparent 55%);
-  animation: smFlash 3.2s ease-in-out infinite;
-}
-
-/* ---------------------------------------------------------
-   MODAL
---------------------------------------------------------- */
-#sm-profile-v40 .sm-modal{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  pointer-events:none;
-}
-#sm-profile-v40 .sm-modal[aria-hidden="true"]{
-  opacity:0;
-  visibility:hidden;
-  transition:opacity .12s ease, visibility .12s ease;
-}
-#sm-profile-v40 .sm-modal[aria-hidden="false"]{
-  opacity:1;
-  visibility:visible;
-  transition:opacity .12s ease;
-  pointer-events:auto;
-}
-#sm-profile-v40 .sm-modal__backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  backdrop-filter: blur(6px);
-}
-#sm-profile-v40 .sm-modal__content{
-  position:relative;
-  z-index:2;
-  width:min(760px, 100%);
-  max-height:min(84vh, 760px);
-  overflow:auto;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(18,18,18,.92);
-  box-shadow:0 30px 120px rgba(0,0,0,.6);
-}
-
-#sm-profile-v40 .sessionSheet{ padding:14px; }
-#sm-profile-v40 .sheetTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px 10px 12px;
-  border-bottom:1px solid rgba(255,255,255,.10);
-  margin-bottom:12px;
-}
-#sm-profile-v40 .sheetTitle{
-  font-size:14px;
-  font-weight:900;
-  letter-spacing:-0.01em;
-  color:rgba(255,255,255,.94);
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-family:"Londrina Solid", Arial, sans-serif;
-}
-#sm-profile-v40 .sheetClose{
-  appearance:none;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:rgba(255,255,255,.92);
-  border-radius:12px;
-  padding:8px 10px;
-  cursor:pointer;
-  font-weight:900;
-  line-height:1;
-}
-#sm-profile-v40 .sheetClose:hover{
-  background:rgba(255,255,255,.09);
-  border-color:rgba(255,255,255,.20);
-}
-#sm-profile-v40 .sheetBody{
-  padding:12px 10px 6px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-#sm-profile-v40 .sheetCard{
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.03);
-  border-radius:16px;
-  padding:12px;
+@media (max-width:479px){
+  #sm-profile-v40 .smEditTxt{ display:none; }
 }
