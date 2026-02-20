@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300;400;900&display=swap');
 
+/* =========================================================
+   SKY MOTION — PROFILE v40 (CLEAN, CONSISTENT)
+   bg #121212, accent #c99a6e, subtle rim #783be2 (minimal)
+   Headline: Arial (readable)
+   Section titles: Londrina (lighter)
+========================================================= */
+
 #sm-profile-v40.smProfile{
   --bg:#121212;
 
@@ -9,10 +16,14 @@
   --line:rgba(255,255,255,.10);
 
   --accent:#c99a6e;
-  --outline:#783be2;
+  --rim: rgba(120,59,226,.22);      /* very subtle */
+  --rimHover: rgba(120,59,226,.28);
 
   --surface:rgba(255,255,255,.03);
+  --surface2:rgba(255,255,255,.02);
   --surfaceBorder:rgba(255,255,255,.10);
+
+  --radius:18px;
 
   font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color:var(--text);
@@ -22,45 +33,45 @@
   overflow-x:hidden;
 }
 
-/* subtle vignette like photo #2 */
+/* FLAT BACKGROUND */
 #sm-profile-v40 .bg{
   position:fixed;
   inset:0;
   pointer-events:none;
-  background:
-    radial-gradient(900px 520px at 20% 12%, rgba(201,154,110,.10), transparent 60%),
-    radial-gradient(900px 520px at 72% 18%, rgba(120,59,226,.10), transparent 62%),
-    radial-gradient(1200px 800px at 50% 30%, rgba(255,255,255,.04), transparent 62%),
-    #121212;
+  background: var(--bg);
   z-index:-1;
 }
 
+/* WRAP — pushed lower */
 #sm-profile-v40 .wrap{
   --hdrH: clamp(72px, 10vh, 120px);
   max-width:1160px;
   margin:0 auto;
   padding: 0 34px 92px;
-  padding-top: calc(var(--hdrH) + 22px) !important;
+  padding-top: calc(var(--hdrH) + 44px) !important;
 }
 @media (max-width:700px){
   #sm-profile-v40 .wrap{
     --hdrH: clamp(72px, 12vh, 140px);
     padding: 0 18px 76px;
-    padding-top: calc(var(--hdrH) + 16px) !important;
+    padding-top: calc(var(--hdrH) + 34px) !important;
   }
 }
 
-/* ---------------- TOP ---------------- */
+/* =========================
+   TOP
+========================= */
 #sm-profile-v40 .top{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:28px;
-  margin-bottom:42px;
+  margin-bottom:40px;
 }
 #sm-profile-v40 .topInner{ flex:1; min-width:0; max-width:780px; }
 
 #sm-profile-v40 .userHead{ display:flex; align-items:flex-start; gap:14px; }
+
 #sm-profile-v40 .avaBtn{
   width:54px; height:54px; border-radius:999px;
   background:rgba(255,255,255,.06);
@@ -72,7 +83,10 @@
   overflow:hidden;
   margin-top:2px;
 }
-#sm-profile-v40 .avaBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .avaBtn:focus-visible{
+  outline:2px solid rgba(120,59,226,.35);
+  outline-offset:2px;
+}
 #sm-profile-v40 .avaImg{ width:100%; height:100%; border-radius:999px; object-fit:cover; display:block; }
 #sm-profile-v40 .avaRing{
   position:absolute; inset:-2px; border-radius:999px; pointer-events:none;
@@ -81,17 +95,21 @@
 }
 
 #sm-profile-v40 .userText{ min-width:0; display:flex; flex-direction:column; gap:10px; }
+
+/* Welcome headline — readable */
 #sm-profile-v40 .hello{
   margin:0;
-  font-size:40px;
-  line-height:1.02;
-  font-weight:900;
-  letter-spacing:-0.02em;
+  font-size:34px;
+  line-height:1.08;
+  font-weight:650;
+  letter-spacing:-0.01em;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  font-family:"Londrina Solid", Arial, sans-serif;
+  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
+#sm-profile-v40 .hello #sm-username{ font-weight:650; }
+
 #sm-profile-v40 .sub{
   margin:0;
   color:var(--muted);
@@ -99,14 +117,9 @@
   line-height:1.55;
   max-width:640px;
 }
-#sm-profile-v40 .brandRule{
-  height:2px;
-  width:150px;
-  border-radius:999px;
-  background:linear-gradient(90deg, rgba(201,154,110,.95), rgba(120,59,226,.70));
-  opacity:.9;
-  margin-top:6px;
-}
+
+/* removed underline under welcome */
+#sm-profile-v40 .brandRule{ display:none !important; }
 
 #sm-profile-v40 .topCta{
   flex:0 0 auto;
@@ -114,10 +127,12 @@
   flex-direction:column;
   align-items:flex-end;
   gap:10px;
-  padding-top:6px;
+  padding-top:4px;
 }
 
-/* CTA button (photo #2 style) */
+/* =========================
+   BUTTONS
+========================= */
 #sm-profile-v40 .smBtn{
   appearance:none;
   border:1px solid rgba(255,255,255,.14);
@@ -137,26 +152,34 @@
   background:rgba(255,255,255,.07);
   border-color:rgba(255,255,255,.22);
 }
-#sm-profile-v40 .smBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; }
+#sm-profile-v40 .smBtn:focus-visible{
+  outline:2px solid rgba(120,59,226,.35);
+  outline-offset:2px;
+}
 
+/* CTA (bronze + very subtle purple rim) */
 #sm-profile-v40 .smBtnCta{
   min-width:220px;
   padding:12px 16px;
   border-radius:14px;
-  border-color: rgba(201,154,110,.50);
-  background: rgba(201,154,110,.22);
+  border-color: rgba(201,154,110,.62);
+  background: rgba(201,154,110,.20);
   color: rgba(255,255,255,.95);
-  font-weight:900;
+  font-weight:850;
   display:inline-flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  box-shadow: 0 18px 46px rgba(0,0,0,.45);
+  box-shadow:
+    0 0 0 1px var(--rim),
+    0 18px 46px rgba(0,0,0,.45);
 }
 #sm-profile-v40 .smBtnCta:hover{
-  border-color: rgba(201,154,110,.72);
-  background: rgba(201,154,110,.26);
-  box-shadow: 0 22px 56px rgba(0,0,0,.55);
+  border-color: rgba(201,154,110,.75);
+  background: rgba(201,154,110,.24);
+  box-shadow:
+    0 0 0 1px var(--rimHover),
+    0 22px 56px rgba(0,0,0,.55);
 }
 #sm-profile-v40 .smBtnCta .chev{
   font-size:18px;
@@ -164,12 +187,12 @@
   transform: translateY(-1px);
 }
 
-/* How it works — small row under CTA */
+/* How it works */
 #sm-profile-v40 .howBtn{
   appearance:none;
   border:0;
   background:transparent;
-  color:rgba(255,255,255,.72);
+  color:rgba(255,255,255,.64);
   font-size:13px;
   font-weight:800;
   cursor:pointer;
@@ -178,8 +201,12 @@
   gap:8px;
   padding:6px 2px;
 }
-#sm-profile-v40 .howBtn:hover{ color:rgba(255,255,255,.86); }
-#sm-profile-v40 .howBtn:focus-visible{ outline:2px solid var(--outline); outline-offset:2px; border-radius:10px; }
+#sm-profile-v40 .howBtn:hover{ color:rgba(255,255,255,.78); }
+#sm-profile-v40 .howBtn:focus-visible{
+  outline:2px solid rgba(120,59,226,.35);
+  outline-offset:2px;
+  border-radius:10px;
+}
 #sm-profile-v40 .howBtn .q{
   width:18px; height:18px;
   border-radius:999px;
@@ -190,7 +217,7 @@
   opacity:.9;
 }
 
-/* Edit pill (top right) */
+/* Edit pill */
 #sm-profile-v40 .smEditBtn{
   padding:9px 12px;
   border-radius:999px;
@@ -209,7 +236,9 @@
   #sm-profile-v40 .topCta{ align-items:flex-start; }
 }
 
-/* ---------------- GRID ---------------- */
+/* =========================
+   GRID / SECTION HEADERS
+========================= */
 #sm-profile-v40 .grid{
   display:grid;
   grid-template-columns:1.05fr .95fr;
@@ -226,18 +255,21 @@
   align-items:center;
   justify-content:space-between;
   gap:14px;
-  padding-bottom:12px;
+  padding-bottom:10px;
   border-bottom:1px solid var(--line);
-  margin-bottom:16px;
+  margin-bottom:12px;
 }
+
+/* section titles: Londrina but calmer */
 #sm-profile-v40 h2{
   margin:0;
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:-0.01em;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:0;
   color:rgba(255,255,255,.92);
   font-family:"Londrina Solid", Arial, sans-serif;
 }
+
 #sm-profile-v40 .count{
   display:inline-flex;
   align-items:center;
@@ -262,7 +294,9 @@
 }
 #sm-profile-v40 .link:hover{ text-decoration:underline; }
 
-/* ---------------- SAVED MOVES (ROW STYLE like photo #2) ---------------- */
+/* =========================
+   SAVED MOVES (row style)
+========================= */
 #sm-profile-v40 .list{
   display:flex;
   flex-direction:column;
@@ -277,7 +311,6 @@
   border-radius:16px;
   border:1px solid rgba(255,255,255,.08);
   background: rgba(255,255,255,.02);
-  box-shadow:none; /* key: remove heavy dashboard shadow */
 }
 
 #sm-profile-v40 .moveThumb{
@@ -304,7 +337,7 @@
 
 #sm-profile-v40 .moveMain{ min-width:0; flex:1; }
 #sm-profile-v40 .moveTitle{
-  font-weight:950;
+  font-weight:850;
   font-size:14px;
   color: rgba(255,255,255,.92);
   white-space:nowrap;
@@ -327,7 +360,7 @@
   flex:0 0 auto;
 }
 
-/* smaller icon buttons like photo #2 */
+/* icon buttons */
 #sm-profile-v40 .smIconBtn{
   width:36px;
   height:36px;
@@ -354,7 +387,9 @@
   fill: rgba(255,255,255,.88);
 }
 
-/* ---------------- SESSION CARDS (keep premium cover look) ---------------- */
+/* =========================
+   SESSION HISTORY (premium cards)
+========================= */
 #sm-profile-v40 .sessionDeck{
   display:flex;
   flex-direction:column;
@@ -398,6 +433,7 @@
 }
 #sm-profile-v40 .sessInner{ position:relative; z-index:2; padding:16px 16px 14px; }
 
+/* delete btn */
 #sm-profile-v40 .sessDelBtn{
   position:absolute;
   top:10px;
@@ -422,7 +458,7 @@
 
 #sm-profile-v40 .sessDate{
   font-size:18px;
-  font-weight:950;
+  font-weight:900;
   letter-spacing:-0.02em;
   color:rgba(255,255,255,.94);
   line-height:1.15;
@@ -467,7 +503,7 @@
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* Weather pill stays compatible with your existing SVG */
+/* Weather pill (compatible with your SVG) */
 #sm-profile-v40 .sessWeather{
   position:relative;
   display:inline-flex;
@@ -489,7 +525,9 @@
 #sm-profile-v40 .sessWeather .wIconWrap{ width:18px; height:18px; display:grid; place-items:center; }
 #sm-profile-v40 .sessWeather svg{ width:18px; height:18px; display:block; }
 
-/* ---------------- MODAL ---------------- */
+/* =========================
+   MODAL (global)
+========================= */
 #sm-profile-v40 .sm-modal{
   position:fixed;
   inset:0;
@@ -500,88 +538,57 @@
   padding:18px;
   pointer-events:none;
 }
-#sm-profile-v40 .sm-modal[aria-hidden="true"]{ opacity:0; visibility:hidden; transition:opacity .12s ease, visibility .12s ease; }
-#sm-profile-v40 .sm-modal[aria-hidden="false"]{ opacity:1; visibility:visible; transition:opacity .12s ease; pointer-events:auto; }
-#sm-profile-v40 .sm-modal__backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.62); backdrop-filter: blur(6px); }
+#sm-profile-v40 .sm-modal[aria-hidden="true"]{
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .12s ease, visibility .12s ease;
+}
+#sm-profile-v40 .sm-modal[aria-hidden="false"]{
+  opacity:1;
+  visibility:visible;
+  transition:opacity .12s ease;
+  pointer-events:auto;
+}
+#sm-profile-v40 .sm-modal__backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  backdrop-filter: blur(6px);
+}
 #sm-profile-v40 .sm-modal__content{
   position:relative;
   z-index:2;
   width:min(760px, 100%);
   max-height:min(84vh, 760px);
   overflow:auto;
-  border-radius:18px;
+  border-radius:22px;
   border:1px solid rgba(255,255,255,.12);
-  background:rgba(18,18,18,.92);
-  box-shadow:0 30px 120px rgba(0,0,0,.6);
+  background: rgba(18,18,18,.94);
+  box-shadow: 0 50px 160px rgba(0,0,0,.72);
 }
 
-/* =========================
-   PATCH — Typography + spacing + background + CTA
-========================= */
+/* ===== Support BOTH modal markup styles ===== */
 
-/* 1) Flat background */
-#sm-profile-v40 .bg{
-  background:#121212 !important;
-}
-
-/* 2) Drop everything a bit lower */
-#sm-profile-v40 .wrap{
-  padding-top: calc(var(--hdrH) + 44px) !important; /* було +22 */
-}
-@media (max-width:700px){
-  #sm-profile-v40 .wrap{
-    padding-top: calc(var(--hdrH) + 34px) !important;
-  }
-}
-
-/* 3) Remove underline / rule under welcome */
-#sm-profile-v40 .brandRule{ display:none !important; }
-
-/* 4) Welcome + username — normal Arial, not fat */
-#sm-profile-v40 .hello{
-  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif !important;
-  font-weight: 650 !important;           /* середній, читабельний */
-  font-size: 34px !important;            /* трішки нижче */
-  letter-spacing: -0.01em !important;
-  text-shadow: none !important;
-}
-#sm-profile-v40 .hello #sm-username{
-  font-weight: 650 !important;
-}
-
-/* =========================
-   EDIT MODAL — Visual upgrade
-========================= */
-
-/* modal glass look */
-#sm-profile-v40 .sm-modal__content{
-  border-radius:20px !important;
-  border:1px solid rgba(255,255,255,.12) !important;
-  background: rgba(18,18,18,.92) !important;
-  box-shadow: 0 40px 140px rgba(0,0,0,.70) !important;
-}
-
-/* sheet base (used by coming soon too) */
+/* New "smSheet" */
 #sm-profile-v40 .smSheet{ padding:14px; }
 #sm-profile-v40 .smSheetHead{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:10px 10px 12px;
-  border-bottom:1px solid rgba(255,255,255,.10);
+  padding:16px 18px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 #sm-profile-v40 .smSheetTitle{
   font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  font-size:14px;
-  font-weight:750;
-  letter-spacing:-0.01em;
+  font-size:15px;
+  font-weight:650;
   color:rgba(255,255,255,.92);
 }
 #sm-profile-v40 .smX{
-  width:36px; height:36px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.06);
   color: rgba(255,255,255,.92);
   cursor:pointer;
@@ -591,28 +598,80 @@
 }
 #sm-profile-v40 .smX:hover{
   transform: translateY(-1px);
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.20);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
 }
-#sm-profile-v40 .smX:focus-visible{
-  outline:2px solid rgba(120,59,226,.35);
-  outline-offset:2px;
+#sm-profile-v40 .smSheetBody{ padding:18px; }
+
+/* Old "sessionSheet" */
+#sm-profile-v40 .sessionSheet{ padding:14px; }
+#sm-profile-v40 .sheetTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 18px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+#sm-profile-v40 .sheetTitle{
+  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size:15px;
+  font-weight:650;
+  color:rgba(255,255,255,.92);
+}
+#sm-profile-v40 .sheetClose{
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  line-height:1;
+}
+#sm-profile-v40 .sheetClose:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
+#sm-profile-v40 .sheetBody{ padding:18px; display:flex; flex-direction:column; gap:12px; }
+
+/* Edit polish (works with your current Edit HTML) */
+#sm-profile-v40 #smEditNick{
+  width:100%;
+  padding:12px 14px !important;
+  border-radius:14px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:rgba(255,255,255,.04) !important;
+  color:rgba(255,255,255,.92) !important;
+  font-size:14px !important;
+  transition:border .15s ease, background .15s ease, box-shadow .15s ease;
+  outline:none;
+}
+#sm-profile-v40 #smEditNick:focus{
+  border-color:rgba(201,154,110,.65) !important;
+  background:rgba(255,255,255,.06) !important;
+  box-shadow:0 0 0 1px var(--rim);
 }
 
-#sm-profile-v40 .smSheetBody{ padding:14px 10px 10px; }
+/* Make avatar preview nicer if exists */
+#sm-profile-v40 #smEditAvaPreview{
+  width:72px !important;
+  height:72px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.15) !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.45);
+}
 
-/* Coming soon card */
+/* Coming soon block (if used) */
 #sm-profile-v40 .smSoon{
   border:1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.03);
   border-radius:16px;
   padding:26px 18px;
   text-align:center;
-}
-#sm-profile-v40 .smSoonIcon{
-  font-size:26px;
-  margin-bottom:10px;
-  opacity:.92;
 }
 #sm-profile-v40 .smSoonTitle{
   font-family: "Londrina Solid", Arial, sans-serif;
@@ -628,58 +687,18 @@
   margin:0 auto 14px;
 }
 
-/* Ghost button variant */
+/* Ghost helper */
 #sm-profile-v40 .smBtnGhost{
   border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.05);
 }
 
-/* Bronze button polish */
+/* Primary button polish (global) */
 #sm-profile-v40 .smBtnPrimary{
   border-color: rgba(201,154,110,.62) !important;
   background: rgba(201,154,110,.18) !important;
-  box-shadow: 0 0 0 1px rgba(120,59,226,.18); /* barely visible purple rim */
+  box-shadow: 0 0 0 1px var(--rim);
 }
 #sm-profile-v40 .smBtnPrimary:hover{
-  box-shadow: 0 0 0 1px rgba(120,59,226,.22);
-}
-
-/* 5) Section titles keep Londrina but less “bold feeling” */
-#sm-profile-v40 h2{
-  font-size: 16px !important;            /* було 18 */
-  font-weight: 700 !important;           /* було 900 */
-  letter-spacing: 0 !important;
-}
-
-/* 6) Reduce heavy spacing around section heads */
-#sm-profile-v40 .sectionHead{
-  padding-bottom: 10px !important;       /* було 12 */
-  margin-bottom: 12px !important;        /* було 16 */
-}
-
-/* 7) CTA: bronze button with a very subtle purple rim */
-#sm-profile-v40 .smBtnCta{
-  border-color: rgba(201,154,110,.62) !important;
-  background: rgba(201,154,110,.20) !important;
-  box-shadow:
-    0 0 0 1px rgba(120,59,226,.22),       /* легкий фіолет навколо */
-    0 18px 46px rgba(0,0,0,.45) !important;
-}
-#sm-profile-v40 .smBtnCta:hover{
-  box-shadow:
-    0 0 0 1px rgba(120,59,226,.28),
-    0 22px 56px rgba(0,0,0,.55) !important;
-}
-
-/* 8) Optional: make CTA text slightly calmer */
-#sm-profile-v40 .smBtnCta{
-  font-weight: 850 !important;
-}
-
-/* 9) Keep “How it works” quiet */
-#sm-profile-v40 .howBtn{
-  color: rgba(255,255,255,.64) !important;
-}
-#sm-profile-v40 .howBtn:hover{
-  color: rgba(255,255,255,.78) !important;
+  box-shadow: 0 0 0 1px var(--rimHover);
 }
