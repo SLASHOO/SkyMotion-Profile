@@ -526,6 +526,181 @@
 #sm-profile-v40 .sessWeather svg{ width:18px; height:18px; display:block; }
 
 /* =========================
+   WEATHER PILL — animated layer restore
+========================= */
+
+/* top row host alignment */
+#sm-profile-v40 .sessTopRowHost{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  margin-bottom:10px;
+}
+
+/* wrapper returned by weatherPillHtml() */
+#sm-profile-v40 .sessTopRow{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  width:100%;
+}
+
+/* make sure pill stays at top */
+#sm-profile-v40 .sessWeather{
+  align-self:flex-start;
+  position:relative;
+  overflow:hidden; /* IMPORTANT: keeps animated layer inside */
+}
+
+/* put text/icon above animated bg */
+#sm-profile-v40 .sessWeather .wIconWrap,
+#sm-profile-v40 .sessWeather .wText{
+  position:relative;
+  z-index:2;
+}
+
+/* base animated layer */
+#sm-profile-v40 .sessWeather::before,
+#sm-profile-v40 .sessWeather::after{
+  content:"";
+  position:absolute;
+  inset:-30px;
+  pointer-events:none;
+  z-index:1;
+  opacity:.95;
+}
+
+/* subtle glass tint */
+#sm-profile-v40 .sessWeather::after{
+  inset:0;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+  opacity:.55;
+}
+
+/* ---------- STATES ---------- */
+
+/* CLOUDS */
+#sm-profile-v40 .sessWeather.is-clouds::before{
+  background:
+    radial-gradient(28px 18px at 18% 42%, rgba(255,255,255,.24), transparent 62%),
+    radial-gradient(34px 22px at 42% 32%, rgba(255,255,255,.20), transparent 64%),
+    radial-gradient(30px 20px at 70% 46%, rgba(255,255,255,.18), transparent 66%),
+    radial-gradient(40px 26px at 86% 34%, rgba(255,255,255,.16), transparent 68%),
+    linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,0));
+  filter: blur(1px);
+  transform: translateX(0);
+  animation: smWxCloudDrift 6.5s linear infinite;
+}
+
+/* SUN */
+#sm-profile-v40 .sessWeather.is-sun::before{
+  background:
+    radial-gradient(120px 80px at 18% 40%, rgba(201,154,110,.30), transparent 60%),
+    radial-gradient(90px 60px at 70% 20%, rgba(255,255,255,.08), transparent 62%),
+    linear-gradient(120deg, rgba(201,154,110,.14), rgba(120,59,226,.08));
+  animation: smWxSunPulse 3.6s ease-in-out infinite;
+}
+
+/* RAIN */
+#sm-profile-v40 .sessWeather.is-rain::before{
+  background:
+    repeating-linear-gradient(
+      115deg,
+      rgba(255,255,255,.16) 0px,
+      rgba(255,255,255,.16) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    linear-gradient(120deg, rgba(120,59,226,.10), rgba(0,0,0,0));
+  opacity:.75;
+  animation: smWxRain 0.85s linear infinite;
+}
+
+/* SNOW */
+#sm-profile-v40 .sessWeather.is-snow::before{
+  background:
+    radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(2px 2px at 22% 55%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(2px 2px at 38% 30%, rgba(255,255,255,.50), transparent 60%),
+    radial-gradient(2px 2px at 54% 60%, rgba(255,255,255,.42), transparent 60%),
+    radial-gradient(2px 2px at 70% 25%, rgba(255,255,255,.52), transparent 60%),
+    radial-gradient(2px 2px at 86% 55%, rgba(255,255,255,.44), transparent 60%),
+    linear-gradient(120deg, rgba(255,255,255,.08), rgba(0,0,0,0));
+  opacity:.8;
+  animation: smWxSnow 2.2s linear infinite;
+}
+
+/* FOG */
+#sm-profile-v40 .sessWeather.is-fog::before{
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.02), rgba(255,255,255,.10)),
+    radial-gradient(120px 60px at 30% 50%, rgba(255,255,255,.10), transparent 70%),
+    radial-gradient(140px 70px at 70% 40%, rgba(255,255,255,.08), transparent 72%);
+  opacity:.75;
+  filter: blur(1px);
+  animation: smWxFog 4.8s ease-in-out infinite;
+}
+
+/* WIND */
+#sm-profile-v40 .sessWeather.is-wind::before{
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,0) 55%),
+    linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,0) 55%),
+    linear-gradient(120deg, rgba(120,59,226,.08), rgba(0,0,0,0));
+  background-size: 180px 2px, 220px 2px, auto;
+  background-position: -40px 22px, -80px 34px, center;
+  background-repeat:no-repeat;
+  opacity:.85;
+  animation: smWxWind 1.2s linear infinite;
+}
+
+/* STORM */
+#sm-profile-v40 .sessWeather.is-storm::before{
+  background:
+    linear-gradient(120deg, rgba(120,59,226,.16), rgba(0,0,0,0)),
+    radial-gradient(160px 90px at 20% 40%, rgba(255,255,255,.10), transparent 60%);
+  opacity:.85;
+  animation: smWxStorm 2.6s ease-in-out infinite;
+}
+
+/* ---------- KEYFRAMES ---------- */
+@keyframes smWxCloudDrift{
+  0%   { transform: translateX(-18px); }
+  100% { transform: translateX(18px); }
+}
+@keyframes smWxSunPulse{
+  0%,100% { transform: scale(1); opacity:.95; }
+  50%     { transform: scale(1.03); opacity:1; }
+}
+@keyframes smWxRain{
+  0%   { transform: translateY(-10px); }
+  100% { transform: translateY(10px); }
+}
+@keyframes smWxSnow{
+  0%   { transform: translateY(-8px); }
+  100% { transform: translateY(10px); }
+}
+@keyframes smWxFog{
+  0%,100% { transform: translateX(-14px); opacity:.70; }
+  50%     { transform: translateX(14px); opacity:.85; }
+}
+@keyframes smWxWind{
+  0%   { background-position: -40px 22px, -80px 34px, center; }
+  100% { background-position: 160px 22px, 220px 34px, center; }
+}
+@keyframes smWxStorm{
+  0%,100% { opacity:.75; }
+  45%     { opacity:1; }
+  46%     { opacity:.55; } /* flash */
+  48%     { opacity:1; }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  #sm-profile-v40 .sessWeather::before{ animation:none !important; }
+}
+
+/* =========================
    MODAL (global)
 ========================= */
 #sm-profile-v40 .sm-modal{
