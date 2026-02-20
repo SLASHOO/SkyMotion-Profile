@@ -390,14 +390,12 @@
 
     const icon = svgForWeather(type);
 
-    return `
-      <div class="sessTopRow">
-        <div class="sessWeather ${cls}" title="${escapeHtml(city || "")}">
-          <span class="wIconWrap" aria-hidden="true">${icon}</span>
-          <span class="wText">${escapeHtml(label)}</span>
-        </div>
-      </div>
-    `;
+   return `
+  <div class="sessWeather ${cls}" title="${escapeHtml(city || "")}">
+    <span class="wIconWrap" aria-hidden="true">${icon}</span>
+    <span class="wText">${escapeHtml(label)}</span>
+  </div>
+`;
   }
 
   async function hydrateSessionWeatherIntoCard(cardEl, sessionId){
