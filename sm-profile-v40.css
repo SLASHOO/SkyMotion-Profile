@@ -1,12 +1,11 @@
 /* =========================================================
-   SKY MOTION — PROFILE v40 (UX v2 / CLEAN)
+   SKY MOTION — PROFILE v40 (SESSION UX v2 / CLEAN)
    - bg #121212
    - accent #c99a6e (bronze)
-   - purple only as thin focus outline
-   - Welcome typography professional (Arial, not fat)
-   - Layout vertically centered-ish (not stuck at top)
-   - Session History shows only 2 cards by default
-   - Edit Profile modal cleaned (base form styles)
+   - purple only as THIN focus outline
+   - Welcome typography professional (Arial, not cartoon)
+   - Layout more centered (not stuck at top)
+   - Session History shows only 2 cards by default (CSS + JS toggle)
 ========================================================= */
 
 #sm-profile-v40.smProfile{
@@ -18,7 +17,7 @@
   --line:rgba(255,255,255,.10);
 
   --accent:#c99a6e;
-  --focus: rgba(120,59,226,.65); /* thin focus only */
+  --focus: rgba(120,59,226,.65);
 
   font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color:var(--text);
@@ -33,9 +32,10 @@
   inset:0;
   pointer-events:none;
   background:#121212;
+  opacity:1;
 }
 
-/* wrapper spacing under site header + centering */
+/* wrapper spacing under site header + “center-ish” */
 #sm-profile-v40 .wrap{
   --hdrH: clamp(72px, 10vh, 120px);
   max-width:1160px;
@@ -55,9 +55,7 @@
   }
 }
 
-/* ---------------------------------------------------------
-   TOP
---------------------------------------------------------- */
+/* TOP */
 #sm-profile-v40 .top{
   display:flex;
   align-items:flex-start;
@@ -66,7 +64,6 @@
   margin-bottom:28px;
 }
 #sm-profile-v40 .topInner{ max-width:880px; }
-
 #sm-profile-v40 .userHead{ display:flex; align-items:flex-start; gap:14px; }
 
 #sm-profile-v40 .avaBtn{
@@ -83,7 +80,6 @@
   margin-top:2px;
 }
 #sm-profile-v40 .avaBtn:focus-visible{ outline:1px solid var(--focus); outline-offset:2px; }
-
 #sm-profile-v40 .avaImg{ width:100%; height:100%; border-radius:999px; object-fit:cover; display:block; }
 #sm-profile-v40 .avaRing{
   position:absolute; inset:-2px; border-radius:999px; pointer-events:none;
@@ -98,12 +94,11 @@
   margin:0;
   font-size:40px;
   line-height:1.06;
-  font-weight:750;          /* professional */
+  font-weight:750;
   letter-spacing:-0.015em;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 #sm-profile-v40 .sub{
   margin:10px 0 0;
@@ -121,9 +116,7 @@
   margin-top:14px;
 }
 
-/* ---------------------------------------------------------
-   BUTTONS
---------------------------------------------------------- */
+/* Buttons */
 #sm-profile-v40 .smBtn{
   appearance:none;
   border:1px solid rgba(255,255,255,.14);
@@ -202,9 +195,13 @@
   font-weight:900;
 }
 
-/* ---------------------------------------------------------
-   GRID
---------------------------------------------------------- */
+/* Responsive */
+@media (max-width:980px){
+  #sm-profile-v40 .top{ flex-direction:column; align-items:stretch; }
+  #sm-profile-v40 .topCta{ align-items:flex-start; }
+}
+
+/* GRID */
 #sm-profile-v40 .grid{
   display:grid;
   grid-template-columns:1.05fr .95fr;
@@ -213,14 +210,10 @@
   margin-top:8px;
 }
 @media (max-width:980px){
-  #sm-profile-v40 .top{ flex-direction:column; align-items:stretch; }
-  #sm-profile-v40 .topCta{ align-items:flex-start; }
   #sm-profile-v40 .grid{ grid-template-columns:1fr; gap:26px; }
 }
 
-/* ---------------------------------------------------------
-   SECTION HEAD
---------------------------------------------------------- */
+/* Section head */
 #sm-profile-v40 .sectionHead{
   display:flex;
   align-items:center;
@@ -253,9 +246,7 @@
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* ---------------------------------------------------------
-   SAVED MOVES — row style
---------------------------------------------------------- */
+/* Saved moves list */
 #sm-profile-v40 .list{
   display:flex;
   flex-direction:column;
@@ -330,10 +321,7 @@
 #sm-profile-v40 .smIconBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.88); }
 #sm-profile-v40 .moveCard.isDeleting{ opacity:.55; pointer-events:none; }
 
-/* ---------------------------------------------------------
-   SESSION HISTORY — show only 2 by default
-   (JS toggle removes/ads class is-collapsed)
---------------------------------------------------------- */
+/* Session history: show only 2 by default */
 #sm-profile-v40 .sessionDeck{
   display:flex;
   flex-direction:column;
@@ -343,7 +331,7 @@
   display:none !important;
 }
 
-/* cards: not clickable vibe */
+/* Session card (not clickable vibe) */
 #sm-profile-v40 .sessCard{
   position:relative;
   border-radius:20px;
@@ -355,11 +343,7 @@
   user-select:none;
   transition:border-color .18s ease;
 }
-#sm-profile-v40 .sessCard:hover{
-  border-color:rgba(255,255,255,.16);
-}
-
-/* cover image */
+#sm-profile-v40 .sessCard:hover{ border-color:rgba(255,255,255,.16); }
 #sm-profile-v40 .sessCard::before{
   content:"";
   position:absolute;
@@ -371,7 +355,6 @@
   filter: saturate(1.02) contrast(1.02);
   z-index:0;
 }
-/* overlay */
 #sm-profile-v40 .sessCard::after{
   content:"";
   position:absolute;
@@ -380,13 +363,8 @@
   background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.30) 42%, rgba(0,0,0,.62) 100%);
   z-index:1;
 }
-#sm-profile-v40 .sessInner{
-  position:relative;
-  z-index:2;
-  padding:16px 16px 14px;
-}
+#sm-profile-v40 .sessInner{ position:relative; z-index:2; padding:16px 16px 14px; }
 
-/* delete button */
 #sm-profile-v40 .sessDelBtn{
   position:absolute;
   top:10px;
@@ -409,7 +387,6 @@
 }
 #sm-profile-v40 .sessDelBtn svg{ width:18px; height:18px; fill: rgba(255,255,255,.88); }
 
-/* text */
 #sm-profile-v40 .sessDate{
   font-size:18px;
   font-weight:900;
@@ -454,7 +431,7 @@
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* Weather pill */
+/* Weather pill (if your cards include it) */
 #sm-profile-v40 .sessWeather{
   display:inline-flex;
   align-items:center;
@@ -475,7 +452,7 @@
 #sm-profile-v40 .sessWeather .wIconWrap{ width:18px; height:18px; display:grid; place-items:center; }
 #sm-profile-v40 .sessWeather svg{ width:18px; height:18px; display:block; }
 
-/* see all link */
+/* see all */
 #sm-profile-v40 .seeAll{
   display:inline-block;
   margin-top:12px;
@@ -485,9 +462,7 @@
 }
 #sm-profile-v40 .seeAll:hover{ color:rgba(255,255,255,.75); }
 
-/* ---------------------------------------------------------
-   MODAL — base cleanup (Edit Profile too)
---------------------------------------------------------- */
+/* MODAL base */
 #sm-profile-v40 .sm-modal{
   position:fixed;
   inset:0;
@@ -526,54 +501,4 @@
   background:rgba(18,18,18,.96);
   box-shadow:0 30px 120px rgba(0,0,0,.65);
   overflow:hidden;
-}
-#sm-profile-v40 .sessionSheet{ padding:18px; }
-#sm-profile-v40 .sheetTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 12px 14px;
-  border-bottom:1px solid rgba(255,255,255,.10);
-  margin-bottom:14px;
-}
-#sm-profile-v40 .sheetTitle{
-  font-size:16px;
-  font-weight:800;
-  color:rgba(255,255,255,.94);
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-#sm-profile-v40 .sheetClose{
-  appearance:none;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:rgba(255,255,255,.92);
-  border-radius:12px;
-  padding:8px 10px;
-  cursor:pointer;
-  font-weight:900;
-  line-height:1;
-}
-#sm-profile-v40 .sheetClose:hover{ background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.20); }
-#sm-profile-v40 .sheetClose:focus-visible{ outline:1px solid var(--focus); outline-offset:2px; }
-
-/* generic inputs if present in edit profile */
-#sm-profile-v40 .sm-modal__content input[type="text"],
-#sm-profile-v40 .sm-modal__content input[type="email"],
-#sm-profile-v40 .sm-modal__content input[type="url"]{
-  width:100%;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.12);
-  color: rgba(255,255,255,.92);
-  border-radius: 14px;
-  padding: 12px 14px;
-  font-size: 14px;
-  outline: none;
-}
-#sm-profile-v40 .sm-modal__content input:focus{
-  border-color: rgba(201,154,110,.55);
-  box-shadow: 0 0 0 2px rgba(201,154,110,.12);
 }
