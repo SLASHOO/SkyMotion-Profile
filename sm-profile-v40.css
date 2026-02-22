@@ -16,7 +16,7 @@
   --line:rgba(255,255,255,.10);
 
   --accent:#c99a6e;
-  --rim: rgba(120,59,226,.22);      /* very subtle */
+  --rim: rgba(120,59,226,.22);
   --rimHover: rgba(120,59,226,.28);
 
   --surface:rgba(255,255,255,.03);
@@ -30,8 +30,20 @@
   background:transparent;
   -webkit-font-smoothing:antialiased;
   text-rendering:geometricPrecision;
-  overflow-x:hidden;
 }
+
+/* Global safety */
+#sm-profile-v40,
+#sm-profile-v40 *{ box-sizing:border-box; }
+
+#sm-profile-v40{ overflow-x:clip; }
+@supports not (overflow-x: clip){
+  #sm-profile-v40{ overflow-x:hidden; }
+}
+
+#sm-profile-v40 img,
+#sm-profile-v40 video,
+#sm-profile-v40 svg{ max-width:100%; }
 
 /* FLAT BACKGROUND */
 #sm-profile-v40 .bg{
@@ -42,20 +54,13 @@
   z-index:-1;
 }
 
-/* WRAP — pushed lower */
+/* WRAP */
 #sm-profile-v40 .wrap{
   --hdrH: clamp(72px, 10vh, 120px);
   max-width:1160px;
   margin:0 auto;
   padding: 0 34px 92px;
   padding-top: calc(var(--hdrH) + 44px) !important;
-}
-@media (max-width:700px){
-  #sm-profile-v40 .wrap{
-    --hdrH: clamp(72px, 12vh, 140px);
-    padding: 0 18px 76px;
-    padding-top: calc(var(--hdrH) + 34px) !important;
-  }
 }
 
 /* =========================
@@ -69,15 +74,17 @@
   margin-bottom:40px;
 }
 #sm-profile-v40 .topInner{ flex:1; min-width:0; max-width:780px; }
-
 #sm-profile-v40 .userHead{ display:flex; align-items:flex-start; gap:14px; }
 
 #sm-profile-v40 .avaBtn{
   width:54px; height:54px; border-radius:999px;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.14);
-  padding:0; display:grid; place-items:center;
-  cursor:pointer; position:relative;
+  padding:0;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  position:relative;
   flex:0 0 auto;
   box-shadow:0 14px 30px rgba(0,0,0,.35);
   overflow:hidden;
@@ -87,16 +94,29 @@
   outline:2px solid rgba(120,59,226,.35);
   outline-offset:2px;
 }
-#sm-profile-v40 .avaImg{ width:100%; height:100%; border-radius:999px; object-fit:cover; display:block; }
+#sm-profile-v40 .avaImg{
+  width:100%;
+  height:100%;
+  border-radius:999px;
+  object-fit:cover;
+  display:block;
+}
 #sm-profile-v40 .avaRing{
-  position:absolute; inset:-2px; border-radius:999px; pointer-events:none;
+  position:absolute;
+  inset:-2px;
+  border-radius:999px;
+  pointer-events:none;
   box-shadow: 0 0 0 1px rgba(201,154,110,.55), 0 0 18px rgba(201,154,110,.18);
   opacity:.9;
 }
 
-#sm-profile-v40 .userText{ min-width:0; display:flex; flex-direction:column; gap:10px; }
+#sm-profile-v40 .userText{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
-/* Welcome headline — readable */
 #sm-profile-v40 .hello{
   margin:0;
   font-size:34px;
@@ -106,7 +126,6 @@
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 #sm-profile-v40 .hello #sm-username{ font-weight:650; }
 
@@ -118,7 +137,6 @@
   max-width:640px;
 }
 
-/* removed underline under welcome */
 #sm-profile-v40 .brandRule{ display:none !important; }
 
 #sm-profile-v40 .topCta{
@@ -157,7 +175,7 @@
   outline-offset:2px;
 }
 
-/* CTA (bronze + very subtle purple rim) */
+/* CTA */
 #sm-profile-v40 .smBtnCta{
   min-width:220px;
   padding:12px 16px;
@@ -231,11 +249,6 @@
 #sm-profile-v40 .smEditIcon{ font-size:14px; opacity:.9; transform:translateY(-.5px); }
 #sm-profile-v40 .smEditTxt{ font-weight:900; }
 
-@media (max-width:900px){
-  #sm-profile-v40 .top{ flex-direction:column; align-items:flex-start; }
-  #sm-profile-v40 .topCta{ align-items:flex-start; }
-}
-
 /* =========================
    GRID / SECTION HEADERS
 ========================= */
@@ -245,10 +258,8 @@
   gap:44px;
   align-items:start;
 }
-@media (max-width:980px){
-  #sm-profile-v40 .grid{ grid-template-columns:1fr; gap:26px; }
-}
-#sm-profile-v40 .grid, #sm-profile-v40 .grid > *{ min-width:0; }
+#sm-profile-v40 .grid,
+#sm-profile-v40 .grid > *{ min-width:0; }
 
 #sm-profile-v40 .sectionHead{
   display:flex;
@@ -260,12 +271,10 @@
   margin-bottom:12px;
 }
 
-/* section titles: Londrina but calmer */
 #sm-profile-v40 h2{
   margin:0;
   font-size:16px;
   font-weight:700;
-  letter-spacing:0;
   color:rgba(255,255,255,.92);
   font-family:"Londrina Solid", Arial, sans-serif;
 }
@@ -295,7 +304,7 @@
 #sm-profile-v40 .link:hover{ text-decoration:underline; }
 
 /* =========================
-   SAVED MOVES (row style)
+   SAVED MOVES
 ========================= */
 #sm-profile-v40 .list{
   display:flex;
@@ -360,7 +369,6 @@
   flex:0 0 auto;
 }
 
-/* icon buttons */
 #sm-profile-v40 .smIconBtn{
   width:36px;
   height:36px;
@@ -388,14 +396,13 @@
 }
 
 /* =========================
-   SESSION HISTORY (premium cards)
+   SESSION HISTORY
 ========================= */
 #sm-profile-v40 .sessionDeck{
   display:flex;
   flex-direction:column;
   gap:12px;
 }
-
 #sm-profile-v40 .sessOverlay{ display:none !important; }
 
 #sm-profile-v40 .sessCard{
@@ -433,7 +440,6 @@
 }
 #sm-profile-v40 .sessInner{ position:relative; z-index:2; padding:16px 16px 14px; }
 
-/* delete btn */
 #sm-profile-v40 .sessDelBtn{
   position:absolute;
   top:10px;
@@ -503,7 +509,6 @@
   box-shadow:0 0 0 2px rgba(201,154,110,.14);
 }
 
-/* Weather pill (compatible with your SVG) */
 #sm-profile-v40 .sessWeather{
   position:relative;
   display:inline-flex;
@@ -529,37 +534,28 @@
    WEATHER PILL — animated layer restore
 ========================= */
 
-/* top row host alignment */
 #sm-profile-v40 .sessTopRowHost{
   display:flex;
   align-items:flex-start;
   justify-content:flex-start;
   margin-bottom:10px;
 }
-
-/* wrapper returned by weatherPillHtml() */
 #sm-profile-v40 .sessTopRow{
   display:flex;
   align-items:flex-start;
   justify-content:flex-start;
   width:100%;
 }
-
-/* make sure pill stays at top */
 #sm-profile-v40 .sessWeather{
   align-self:flex-start;
   position:relative;
-  overflow:hidden; /* IMPORTANT: keeps animated layer inside */
+  overflow:hidden;
 }
-
-/* put text/icon above animated bg */
 #sm-profile-v40 .sessWeather .wIconWrap,
 #sm-profile-v40 .sessWeather .wText{
   position:relative;
   z-index:2;
 }
-
-/* base animated layer */
 #sm-profile-v40 .sessWeather::before,
 #sm-profile-v40 .sessWeather::after{
   content:"";
@@ -569,15 +565,11 @@
   z-index:1;
   opacity:.95;
 }
-
-/* subtle glass tint */
 #sm-profile-v40 .sessWeather::after{
   inset:0;
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
   opacity:.55;
 }
-
-/* ---------- STATES ---------- */
 
 /* CLOUDS */
 #sm-profile-v40 .sessWeather.is-clouds::before{
@@ -663,45 +655,20 @@
   animation: smWxStorm 2.6s ease-in-out infinite;
 }
 
-/* ---------- KEYFRAMES ---------- */
-@keyframes smWxCloudDrift{
-  0%   { transform: translateX(-18px); }
-  100% { transform: translateX(18px); }
-}
-@keyframes smWxSunPulse{
-  0%,100% { transform: scale(1); opacity:.95; }
-  50%     { transform: scale(1.03); opacity:1; }
-}
-@keyframes smWxRain{
-  0%   { transform: translateY(-10px); }
-  100% { transform: translateY(10px); }
-}
-@keyframes smWxSnow{
-  0%   { transform: translateY(-8px); }
-  100% { transform: translateY(10px); }
-}
-@keyframes smWxFog{
-  0%,100% { transform: translateX(-14px); opacity:.70; }
-  50%     { transform: translateX(14px); opacity:.85; }
-}
-@keyframes smWxWind{
-  0%   { background-position: -40px 22px, -80px 34px, center; }
-  100% { background-position: 160px 22px, 220px 34px, center; }
-}
-@keyframes smWxStorm{
-  0%,100% { opacity:.75; }
-  45%     { opacity:1; }
-  46%     { opacity:.55; } /* flash */
-  48%     { opacity:1; }
-}
+@keyframes smWxCloudDrift{ 0%{transform:translateX(-18px);} 100%{transform:translateX(18px);} }
+@keyframes smWxSunPulse{ 0%,100%{transform:scale(1);opacity:.95;} 50%{transform:scale(1.03);opacity:1;} }
+@keyframes smWxRain{ 0%{transform:translateY(-10px);} 100%{transform:translateY(10px);} }
+@keyframes smWxSnow{ 0%{transform:translateY(-8px);} 100%{transform:translateY(10px);} }
+@keyframes smWxFog{ 0%,100%{transform:translateX(-14px);opacity:.70;} 50%{transform:translateX(14px);opacity:.85;} }
+@keyframes smWxWind{ 0%{background-position:-40px 22px, -80px 34px, center;} 100%{background-position:160px 22px, 220px 34px, center;} }
+@keyframes smWxStorm{ 0%,100%{opacity:.75;} 45%{opacity:1;} 46%{opacity:.55;} 48%{opacity:1;} }
 
-/* respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   #sm-profile-v40 .sessWeather::before{ animation:none !important; }
 }
 
 /* =========================
-   MODAL (global)
+   MODAL
 ========================= */
 #sm-profile-v40 .sm-modal{
   position:fixed;
@@ -742,8 +709,6 @@
   box-shadow: 0 50px 160px rgba(0,0,0,.72);
 }
 
-/* ===== Support BOTH modal markup styles ===== */
-
 /* New "smSheet" */
 #sm-profile-v40 .smSheet{ padding:14px; }
 #sm-profile-v40 .smSheetHead{
@@ -755,7 +720,6 @@
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 #sm-profile-v40 .smSheetTitle{
-  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   font-size:15px;
   font-weight:650;
   color:rgba(255,255,255,.92);
@@ -789,7 +753,6 @@
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 #sm-profile-v40 .sheetTitle{
-  font-family: Arial, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   font-size:15px;
   font-weight:650;
   color:rgba(255,255,255,.92);
@@ -813,7 +776,6 @@
 }
 #sm-profile-v40 .sheetBody{ padding:18px; display:flex; flex-direction:column; gap:12px; }
 
-/* Edit polish (works with your current Edit HTML) */
 #sm-profile-v40 #smEditNick{
   width:100%;
   padding:12px 14px !important;
@@ -831,7 +793,6 @@
   box-shadow:0 0 0 1px var(--rim);
 }
 
-/* Make avatar preview nicer if exists */
 #sm-profile-v40 #smEditAvaPreview{
   width:72px !important;
   height:72px !important;
@@ -840,273 +801,118 @@
   box-shadow: 0 12px 28px rgba(0,0,0,.45);
 }
 
-/* Coming soon block (if used) */
-#sm-profile-v40 .smSoon{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  border-radius:16px;
-  padding:26px 18px;
-  text-align:center;
-}
-#sm-profile-v40 .smSoonTitle{
-  font-family: "Londrina Solid", Arial, sans-serif;
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:6px;
-}
-#sm-profile-v40 .smSoonText{
-  font-size:13px;
-  color: rgba(255,255,255,.64);
-  line-height:1.55;
-  max-width:440px;
-  margin:0 auto 14px;
-}
-
-/* Ghost helper */
-#sm-profile-v40 .smBtnGhost{
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.05);
-}
-
-/* Primary button polish (global) */
-#sm-profile-v40 .smBtnPrimary{
-  border-color: rgba(201,154,110,.62) !important;
-  background: rgba(201,154,110,.18) !important;
-  box-shadow: 0 0 0 1px var(--rim);
-}
-#sm-profile-v40 .smBtnPrimary:hover{
-  box-shadow: 0 0 0 1px var(--rimHover);
-}
-
-
 /* =========================================================
-   MOBILE ADAPTATIONS — Profile v40
-   Add this block at the END of your CSS
+   RESPONSIVE
 ========================================================= */
 
-/* Stop any accidental horizontal scroll on mobile */
-#sm-profile-v40,
-#sm-profile-v40 *{
-  box-sizing: border-box;
-}
-#sm-profile-v40{
-  overflow-x: clip; /* modern */
-}
-@supports not (overflow-x: clip){
-  #sm-profile-v40{ overflow-x:hidden; }
-}
-
-/* Safer media rendering */
-#sm-profile-v40 img,
-#sm-profile-v40 video,
-#sm-profile-v40 svg{
-  max-width:100%;
-}
-
-/* ====== Tablet & down ====== */
-@media (max-width: 900px){
-  #sm-profile-v40 .top{
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-    margin-bottom: 26px;
-  }
-
-  #sm-profile-v40 .topInner{
-    max-width: 100%;
-  }
-
-  #sm-profile-v40 .topCta{
-    width: 100%;
-    align-items: stretch; /* buttons align left and stretch */
-    gap: 10px;
-    padding-top: 0;
-  }
-
-  /* Make CTA buttons full width on mobile/tablet */
-  #sm-profile-v40 .smBtnCta{
-    width: 100%;
-    min-width: 0;
-    justify-content: space-between;
-  }
-
-  #sm-profile-v40 .smEditBtn{
-    width: 100%;
-    justify-content: center;
-  }
-
-  #sm-profile-v40 .howBtn{
-    width: 100%;
-    justify-content: center;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.10);
-  }
-}
-
-/* ====== Phone ====== */
-@media (max-width: 520px){
-  /* tighter wrap */
+/* Wrap spacing on smaller screens */
+@media (max-width: 700px){
   #sm-profile-v40 .wrap{
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    padding-bottom: 64px !important;
-  }
-
-  /* avatar + headline layout */
-  #sm-profile-v40 .userHead{
-    gap: 12px;
-  }
-  #sm-profile-v40 .avaBtn{
-    width: 50px;
-    height: 50px;
-  }
-  #sm-profile-v40 .avaImg{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* IMPORTANT: remove nowrap so title doesn’t force horizontal scroll */
-  #sm-profile-v40 .hello{
-    font-size: 26px;
-    line-height: 1.1;
-    white-space: normal;     /* was nowrap */
-    overflow: visible;       /* allow wrap */
-    text-overflow: clip;
-    word-break: break-word;
-  }
-
-  #sm-profile-v40 .sub{
-    font-size: 13px;
-    line-height: 1.55;
-    max-width: 100%;
-  }
-
-  /* grid spacing */
-  #sm-profile-v40 .grid{
-    gap: 20px;
-  }
-
-  /* section headers slightly tighter */
-  #sm-profile-v40 .sectionHead{
-    padding-bottom: 8px;
-    margin-bottom: 10px;
-  }
-  #sm-profile-v40 h2{
-    font-size: 15px;
-  }
-
-  /* Saved moves cards: allow content to shrink */
-  #sm-profile-v40 .moveCard{
-    padding: 12px;
-    gap: 10px;
-    border-radius: 16px;
-  }
-  #sm-profile-v40 .moveThumb{
-    width: 52px;
-    height: 38px;
-    border-radius: 12px;
-  }
-
-  /* If titles are long */
-  #sm-profile-v40 .moveTitle,
-  #sm-profile-v40 .moveMeta2{
-    max-width: 100%;
-  }
-
-  /* Session cards: reduce padding + typography */
-  #sm-profile-v40 .sessInner{
-    padding: 14px 14px 12px;
-  }
-  #sm-profile-v40 .sessDate{
-    font-size: 16px;
-  }
-  #sm-profile-v40 .sessCity{
-    max-width: 240px;
-  }
-
-  /* Pills should not overflow */
-  #sm-profile-v40 .sessBottom{
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  #sm-profile-v40 .sessPill,
-  #sm-profile-v40 .sessWeather{
-    max-width: 100%;
-  }
-
-  /* Modal sizing on phone */
-  #sm-profile-v40 .sm-modal{
-    padding: 12px;
-  }
-  #sm-profile-v40 .sm-modal__content{
-    width: 100%;
-    max-height: 86vh;
-    border-radius: 18px;
+    --hdrH: clamp(72px, 12vh, 140px);
+    padding: 0 18px 76px;
+    padding-top: calc(var(--hdrH) + 34px) !important;
   }
 }
 
-/* ====== Very small phones ====== */
-@media (max-width: 360px){
-  #sm-profile-v40 .hello{ font-size: 24px; }
-  #sm-profile-v40 .smBtn{ font-size: 12.5px; }
-  #sm-profile-v40 .smBtnCta{ padding: 12px 14px; }
-}
-
-
-
-/* =========================================================
-   FIX: Mobile layout
-   - Session History below Saved Moves
-   - Better CTA layout (Start full width, 2 buttons in a row)
-   Add at the END of your CSS
-========================================================= */
-
-/* Force single column earlier (so it works in narrow preview/iframes too) */
+/* Tablet: stack hero, grid becomes 1 column (fix your screenshot issue) */
 @media (max-width: 920px){
-  #sm-profile-v40 .grid{
-    grid-template-columns: 1fr !important;
-    gap: 22px !important;
+  #sm-profile-v40 .top{
+    flex-direction:column;
+    align-items:stretch;
+    gap:16px;
+    margin-bottom:26px;
   }
+  #sm-profile-v40 .topInner{ max-width:100%; }
 
-  /* Explicit order (just in case) */
-  #sm-profile-v40 section[aria-label="Saved Moves"]{ order: 1; }
-  #sm-profile-v40 section[aria-label="Session History"]{ order: 2; }
+  #sm-profile-v40 .grid{
+    grid-template-columns:1fr !important;
+    gap:22px !important;
+  }
+  #sm-profile-v40 section[aria-label="Saved Moves"]{ order:1; }
+  #sm-profile-v40 section[aria-label="Session History"]{ order:2; }
+
+  #sm-profile-v40 .topCta{
+    width:100%;
+    align-items:stretch;
+    gap:10px;
+    padding-top:0;
+  }
 }
 
-/* Phone: make CTA look premium (not 3 full-width heavy bars) */
+/* Phone: premium CTA layout (1 + 2 in a row) */
 @media (max-width: 560px){
+  #sm-profile-v40 .wrap{
+    padding-left:16px !important;
+    padding-right:16px !important;
+    padding-bottom:64px !important;
+  }
+
+  #sm-profile-v40 .hello{
+    font-size:26px;
+    line-height:1.1;
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
+    word-break:break-word;
+  }
+  #sm-profile-v40 .sub{
+    font-size:13px;
+    max-width:100%;
+  }
+
   #sm-profile-v40 .topCta{
-    width: 100%;
-    display: grid !important;
+    display:grid !important;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    align-items: stretch;
+    gap:10px;
+    align-items:stretch;
   }
 
-  /* Start Session takes full row */
+  /* Start Session full width */
   #sm-profile-v40 .smBtnCta{
-    width: 100% !important;
-    min-width: 0 !important;
+    width:100% !important;
+    min-width:0 !important;
     grid-column: 1 / -1;
-    justify-content: space-between;
+    justify-content:space-between;
   }
 
-  /* Secondary buttons: half width each */
+  /* How it works + Edit half width */
   #sm-profile-v40 .howBtn,
   #sm-profile-v40 .smEditBtn{
-    width: 100% !important;
-    justify-content: center !important;
+    width:100% !important;
+    justify-content:center !important;
   }
 
-  /* Make How it works look like a real button in this grid */
+  /* Make How it works look like a button in the grid */
   #sm-profile-v40 .howBtn{
-    padding: 10px 12px !important;
-    border-radius: 999px !important;
+    padding:10px 12px !important;
+    border-radius:999px !important;
     background: rgba(255,255,255,.05) !important;
     border: 1px solid rgba(255,255,255,.12) !important;
     color: rgba(255,255,255,.88) !important;
+  }
+
+  /* Session card bottom row wrap */
+  #sm-profile-v40 .sessBottom{
+    flex-wrap:wrap;
+    gap:10px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px){
+  #sm-profile-v40 .hello{ font-size:24px; }
+  #sm-profile-v40 .smBtn{ font-size:12.5px; }
+  #sm-profile-v40 .smBtnCta{ padding:12px 14px; }
+  #sm-profile-v40 .sessInner{ padding:14px 14px 12px; }
+  #sm-profile-v40 .sessDate{ font-size:16px; }
+}
+
+/* Modal on phone */
+@media (max-width: 520px){
+  #sm-profile-v40 .sm-modal{ padding:12px; }
+  #sm-profile-v40 .sm-modal__content{
+    width:100%;
+    max-height:86vh;
+    border-radius:18px;
   }
 }
