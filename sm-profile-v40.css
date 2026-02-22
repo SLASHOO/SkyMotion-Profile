@@ -877,3 +877,180 @@
 #sm-profile-v40 .smBtnPrimary:hover{
   box-shadow: 0 0 0 1px var(--rimHover);
 }
+
+
+/* =========================================================
+   MOBILE ADAPTATIONS — Profile v40
+   Add this block at the END of your CSS
+========================================================= */
+
+/* Stop any accidental horizontal scroll on mobile */
+#sm-profile-v40,
+#sm-profile-v40 *{
+  box-sizing: border-box;
+}
+#sm-profile-v40{
+  overflow-x: clip; /* modern */
+}
+@supports not (overflow-x: clip){
+  #sm-profile-v40{ overflow-x:hidden; }
+}
+
+/* Safer media rendering */
+#sm-profile-v40 img,
+#sm-profile-v40 video,
+#sm-profile-v40 svg{
+  max-width:100%;
+}
+
+/* ====== Tablet & down ====== */
+@media (max-width: 900px){
+  #sm-profile-v40 .top{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  #sm-profile-v40 .topInner{
+    max-width: 100%;
+  }
+
+  #sm-profile-v40 .topCta{
+    width: 100%;
+    align-items: stretch; /* buttons align left and stretch */
+    gap: 10px;
+    padding-top: 0;
+  }
+
+  /* Make CTA buttons full width on mobile/tablet */
+  #sm-profile-v40 .smBtnCta{
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+  }
+
+  #sm-profile-v40 .smEditBtn{
+    width: 100%;
+    justify-content: center;
+  }
+
+  #sm-profile-v40 .howBtn{
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.10);
+  }
+}
+
+/* ====== Phone ====== */
+@media (max-width: 520px){
+  /* tighter wrap */
+  #sm-profile-v40 .wrap{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 64px !important;
+  }
+
+  /* avatar + headline layout */
+  #sm-profile-v40 .userHead{
+    gap: 12px;
+  }
+  #sm-profile-v40 .avaBtn{
+    width: 50px;
+    height: 50px;
+  }
+  #sm-profile-v40 .avaImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* IMPORTANT: remove nowrap so title doesn’t force horizontal scroll */
+  #sm-profile-v40 .hello{
+    font-size: 26px;
+    line-height: 1.1;
+    white-space: normal;     /* was nowrap */
+    overflow: visible;       /* allow wrap */
+    text-overflow: clip;
+    word-break: break-word;
+  }
+
+  #sm-profile-v40 .sub{
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+
+  /* grid spacing */
+  #sm-profile-v40 .grid{
+    gap: 20px;
+  }
+
+  /* section headers slightly tighter */
+  #sm-profile-v40 .sectionHead{
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  #sm-profile-v40 h2{
+    font-size: 15px;
+  }
+
+  /* Saved moves cards: allow content to shrink */
+  #sm-profile-v40 .moveCard{
+    padding: 12px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+  #sm-profile-v40 .moveThumb{
+    width: 52px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  /* If titles are long */
+  #sm-profile-v40 .moveTitle,
+  #sm-profile-v40 .moveMeta2{
+    max-width: 100%;
+  }
+
+  /* Session cards: reduce padding + typography */
+  #sm-profile-v40 .sessInner{
+    padding: 14px 14px 12px;
+  }
+  #sm-profile-v40 .sessDate{
+    font-size: 16px;
+  }
+  #sm-profile-v40 .sessCity{
+    max-width: 240px;
+  }
+
+  /* Pills should not overflow */
+  #sm-profile-v40 .sessBottom{
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #sm-profile-v40 .sessPill,
+  #sm-profile-v40 .sessWeather{
+    max-width: 100%;
+  }
+
+  /* Modal sizing on phone */
+  #sm-profile-v40 .sm-modal{
+    padding: 12px;
+  }
+  #sm-profile-v40 .sm-modal__content{
+    width: 100%;
+    max-height: 86vh;
+    border-radius: 18px;
+  }
+}
+
+/* ====== Very small phones ====== */
+@media (max-width: 360px){
+  #sm-profile-v40 .hello{ font-size: 24px; }
+  #sm-profile-v40 .smBtn{ font-size: 12.5px; }
+  #sm-profile-v40 .smBtnCta{ padding: 12px 14px; }
+}
