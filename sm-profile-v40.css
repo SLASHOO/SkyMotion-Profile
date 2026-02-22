@@ -1054,3 +1054,59 @@
   #sm-profile-v40 .smBtn{ font-size: 12.5px; }
   #sm-profile-v40 .smBtnCta{ padding: 12px 14px; }
 }
+
+
+
+/* =========================================================
+   FIX: Mobile layout
+   - Session History below Saved Moves
+   - Better CTA layout (Start full width, 2 buttons in a row)
+   Add at the END of your CSS
+========================================================= */
+
+/* Force single column earlier (so it works in narrow preview/iframes too) */
+@media (max-width: 920px){
+  #sm-profile-v40 .grid{
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  /* Explicit order (just in case) */
+  #sm-profile-v40 section[aria-label="Saved Moves"]{ order: 1; }
+  #sm-profile-v40 section[aria-label="Session History"]{ order: 2; }
+}
+
+/* Phone: make CTA look premium (not 3 full-width heavy bars) */
+@media (max-width: 560px){
+  #sm-profile-v40 .topCta{
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  /* Start Session takes full row */
+  #sm-profile-v40 .smBtnCta{
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+
+  /* Secondary buttons: half width each */
+  #sm-profile-v40 .howBtn,
+  #sm-profile-v40 .smEditBtn{
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Make How it works look like a real button in this grid */
+  #sm-profile-v40 .howBtn{
+    padding: 10px 12px !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.05) !important;
+    border: 1px solid rgba(255,255,255,.12) !important;
+    color: rgba(255,255,255,.88) !important;
+  }
+}
